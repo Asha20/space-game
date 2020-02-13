@@ -16,7 +16,7 @@ const ctx = canvas.getContext("2d")!;
 
 const keyboard = new Keyboard();
 
-const camera = new Camera(ctx, ({ up, down, left, right }) => {
+const camera = new Camera(ctx, ({ up, down, left, right, zoomIn, zoomOut }) => {
   if (keyboard.down("w")) {
     up();
   }
@@ -29,11 +29,17 @@ const camera = new Camera(ctx, ({ up, down, left, right }) => {
   if (keyboard.down("d")) {
     right();
   }
+  if (keyboard.pressed("e")) {
+    zoomIn();
+  }
+  if (keyboard.pressed("q")) {
+    zoomOut();
+  }
 });
 
 const drawables: Drawable[] = [];
 
-const testAsteroid = new Asteroid(30, 30, 20);
+const testAsteroid = new Asteroid(0, 0, 20);
 drawables.push(testAsteroid);
 
 function draw() {

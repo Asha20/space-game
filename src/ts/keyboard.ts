@@ -20,11 +20,11 @@ export class Keyboard {
   }
 
   down(key: string) {
-    return this.downMap.get(key);
+    return Boolean(this.downMap.get(key));
   }
 
   pressed(key: string) {
-    const val = this.pressedMap.get(key);
+    const val = Boolean(this.pressedMap.get(key));
     if (val) {
       this.pressedMap.set(key, false);
     }

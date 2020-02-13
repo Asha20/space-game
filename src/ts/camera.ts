@@ -5,6 +5,8 @@ interface Controls {
   down(): void;
   left(): void;
   right(): void;
+  zoomIn(): void;
+  zoomOut(): void;
 }
 
 type Controller = (controls: Controls) => void;
@@ -15,32 +17,42 @@ const SPEED = 4;
 export class Camera {
   x = 0;
   y = 0;
-  width: number;
-  height: number;
+  zoom = 1;
   controls: Controls;
   controller: Controller;
+  canvasWidth: number;
+  canvasHeight: number;
   ctx: Context;
 
   constructor(context: Context, controller: Controller) {
     this.ctx = context;
-    this.width = context.canvas.width;
-    this.height = context.canvas.height;
-
+    this.canvasWidth = context.canvas.width;
+    this.canvasHeight = context.canvas.height;
     const up = () => this.move(0, -SPEED);
     const down = () => this.move(0, SPEED);
     const left = () => this.move(-SPEED, 0);
     const right = () => this.move(SPEED, 0);
+    const zoomIn = () => this.addZoom(2);
+    const zoomOut = () => this.addZoom(0.5);
 
-    this.controls = { up, down, left, right };
+    this.controls = { up, down, left, right, zoomIn, zoomOut };
     this.controller = controller;
+  }
+
+  get width() {
+    return this.canvasWidth / this.zoom;
+  }
+
+  get height() {
+    return this.canvasHeight / this.zoom;
   }
 
   inBounds(obj: Drawable) {
     return (
-      obj.x + obj.width / 2 >= this.x &&
-      obj.x - obj.width / 2 <= this.x + this.width &&
-      obj.y + obj.height / 2 >= this.y &&
-      obj.y - obj.height / 2 <= this.y + this.height
+      obj.x + obj.width / 2 >= this.x - this.width / 2 &&
+      obj.x - obj.width / 2 <= this.x + this.width / 2 &&
+      obj.y + obj.height / 2 >= this.y - this.height / 2 &&
+      obj.y - obj.height / 2 <= this.y + this.height / 2
     );
   }
 
@@ -49,10 +61,18 @@ export class Camera {
     this.y += deltaY;
   }
 
-  render(drawables: Drawable[]) {
-    this.ctx.clearRect(0, 0, this.width, this.height);
+  addZoom(delta: number) {
+    const newZoom = this.zoom * delta;
+    if (newZoom >= 0.25 && newZoom <= 4) {
+      this.zoom = newZoom;
+    }
+  }
 
-    this.ctx.translate(-this.x, -this.y);
+  render(drawables: Drawable[]) {
+    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+    this.ctx.scale(this.zoom, this.zoom);
+    this.ctx.translate(this.width / 2 - this.x, this.height / 2 - this.y);
 
     for (const drawable of drawables) {
       if (this.inBounds(drawable)) {
