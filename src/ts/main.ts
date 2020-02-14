@@ -1,7 +1,7 @@
 import { Keyboard } from "./keyboard";
 import { Camera } from "./camera";
 import { Drawable } from "./util";
-import { Asteroid } from "./asteroid";
+import { Asteroid } from "./environment/asteroid";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 if (!canvas) {
@@ -40,7 +40,11 @@ const camera = new Camera(ctx, ({ up, down, left, right, zoomIn, zoomOut }) => {
 const drawables: Drawable[] = [];
 
 const testAsteroid = new Asteroid(0, 0, 20);
-drawables.push(testAsteroid);
+drawables.push(
+  testAsteroid,
+  new Asteroid(0, 100, 30),
+  new Asteroid(0, 200, 40),
+);
 
 function draw() {
   camera.render(drawables);
