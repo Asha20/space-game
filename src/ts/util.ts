@@ -5,3 +5,8 @@ export interface Drawable {
   height: number;
   draw(ctx: CanvasRenderingContext2D): void;
 }
+
+export interface Vector {
+  x: number;
+  y: number;
+}

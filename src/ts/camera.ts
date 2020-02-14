@@ -1,4 +1,5 @@
 import { Drawable } from "./util";
+import { Mouse } from "./input";
 
 interface Controls {
   up(): void;
@@ -23,11 +24,18 @@ export class Camera {
   canvasWidth: number;
   canvasHeight: number;
   ctx: Context;
+  mouse: Mouse;
 
   constructor(context: Context, controller: Controller) {
     this.ctx = context;
     this.canvasWidth = context.canvas.width;
     this.canvasHeight = context.canvas.height;
+    this.mouse = new Mouse(({ x, y }) => {
+      return {
+        x: x / this.zoom + this.x - this.width / 2,
+        y: y / this.zoom + this.y - this.height / 2,
+      };
+    });
     const up = () => this.move(0, -SPEED);
     const down = () => this.move(0, SPEED);
     const left = () => this.move(-SPEED, 0);
@@ -59,6 +67,7 @@ export class Camera {
   move(deltaX: number, deltaY: number) {
     this.x += deltaX;
     this.y += deltaY;
+    this.mouse.recalculate();
   }
 
   addZoom(delta: number) {
@@ -66,10 +75,12 @@ export class Camera {
     if (newZoom >= 0.25 && newZoom <= 4) {
       this.zoom = newZoom;
     }
+    this.mouse.recalculate();
   }
 
   render(drawables: Drawable[]) {
-    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
     this.ctx.scale(this.zoom, this.zoom);
     this.ctx.translate(this.width / 2 - this.x, this.height / 2 - this.y);

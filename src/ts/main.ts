@@ -1,7 +1,9 @@
-import { Keyboard } from "./keyboard";
+import { Keyboard, Mouse } from "./input";
 import { Camera } from "./camera";
 import { Drawable } from "./util";
 import { Asteroid } from "./environment/asteroid";
+import { Miner } from "./infrastructure/miner";
+import * as world from "./environment/world";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 if (!canvas) {
@@ -37,17 +39,22 @@ const camera = new Camera(ctx, ({ up, down, left, right, zoomIn, zoomOut }) => {
   }
 });
 
-const drawables: Drawable[] = [];
+const cameraMouse = camera.mouse;
 
-const testAsteroid = new Asteroid(0, 0, 20);
-drawables.push(
-  testAsteroid,
-  new Asteroid(0, 100, 30),
-  new Asteroid(0, 200, 40),
-);
+const ghostMiner = new Miner(cameraMouse.x, cameraMouse.y);
+
+world.drawables.push(ghostMiner);
 
 function draw() {
-  camera.render(drawables);
+  ghostMiner.x = cameraMouse.x;
+  ghostMiner.y = cameraMouse.y;
+  camera.render(world.drawables);
+
+  if (cameraMouse.pressed()) {
+    const miner = new Miner(cameraMouse.x, cameraMouse.y);
+    world.miners.push(miner);
+    world.drawables.push(miner);
+  }
 
   requestAnimationFrame(draw);
 }

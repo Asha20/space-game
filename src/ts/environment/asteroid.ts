@@ -1,11 +1,5 @@
-import { Drawable } from "../util";
+import { Drawable, Vector } from "../util";
 import * as random from "../random";
-
-type Context = CanvasRenderingContext2D;
-interface Vector {
-  x: number;
-  y: number;
-}
 
 const colors = ["#ff4c4c", "#ff9d4c", "#3dcd3d", "#2e9c9c"];
 
@@ -36,7 +30,7 @@ export class Asteroid implements Drawable {
     return random.dice(15);
   }
 
-  draw(ctx: Context) {
+  draw(ctx: CanvasRenderingContext2D) {
     random.setSeed(this.seed);
     ctx.fillStyle = this.color;
 
