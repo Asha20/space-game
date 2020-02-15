@@ -78,7 +78,7 @@ export class Camera {
     this.mouse.recalculate();
   }
 
-  render(drawables: Drawable[]) {
+  render(drawables: Iterable<Drawable>) {
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 

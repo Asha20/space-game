@@ -1,5 +1,6 @@
-import { Drawable, Vector } from "../util";
+import { Drawable, Vector, Destroyable } from "../util";
 import * as random from "../random";
+import * as world from "./world";
 
 const colors = ["#ff4c4c", "#ff9d4c", "#3dcd3d", "#2e9c9c"];
 
@@ -7,30 +8,48 @@ function radians(degrees: number) {
   return (degrees / 180) * Math.PI;
 }
 
-export class Asteroid implements Drawable {
+export class Asteroid implements Drawable, Destroyable {
   x: number;
   y: number;
-  width: number;
-  height: number;
-  radius: number;
+  mass: number;
   color: string;
   seed: number;
 
-  constructor(x: number, y: number, radius: number) {
+  constructor(x: number, y: number, mass: number) {
     this.x = x;
     this.y = y;
     this.seed = random.getSeed();
-    this.radius = radius;
-    this.width = this.height = radius * 2;
+    this.mass = mass / 6;
     const colorIndex = random.range(0, colors.length - 1);
     this.color = colors[colorIndex];
+    world.register(this);
+  }
+
+  get radius() {
+    return this.mass;
+  }
+
+  get width() {
+    return this.radius * 2;
+  }
+
+  get height() {
+    return this.radius * 2;
   }
 
   static shouldSpawn() {
     return random.dice(15);
   }
 
+  destroy() {
+    world.destroy(this);
+  }
+
   draw(ctx: CanvasRenderingContext2D) {
+    if (this.mass <= 0) {
+      this.destroy();
+    }
+
     random.setSeed(this.seed);
     ctx.fillStyle = this.color;
 

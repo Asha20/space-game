@@ -1,7 +1,5 @@
-import { Keyboard, Mouse } from "./input";
+import { Keyboard } from "./input";
 import { Camera } from "./camera";
-import { Drawable } from "./util";
-import { Asteroid } from "./environment/asteroid";
 import { Miner } from "./infrastructure/miner";
 import * as world from "./environment/world";
 
@@ -42,8 +40,7 @@ const camera = new Camera(ctx, ({ up, down, left, right, zoomIn, zoomOut }) => {
 const cameraMouse = camera.mouse;
 
 const ghostMiner = new Miner(cameraMouse.x, cameraMouse.y);
-
-world.drawables.push(ghostMiner);
+world.register(ghostMiner);
 
 function draw() {
   ghostMiner.x = cameraMouse.x;
@@ -52,8 +49,7 @@ function draw() {
 
   if (cameraMouse.pressed()) {
     const miner = new Miner(cameraMouse.x, cameraMouse.y);
-    world.miners.push(miner);
-    world.drawables.push(miner);
+    world.register(miner);
   }
 
   requestAnimationFrame(draw);
