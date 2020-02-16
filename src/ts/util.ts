@@ -1,4 +1,4 @@
-import { Infrastructure, Network } from "./infrastructure/index";
+import { Network } from "./infrastructure/index";
 
 export interface Drawable {
   x: number;
@@ -20,10 +20,8 @@ export interface Destroyable {
   destroy(): void;
 }
 
-export interface Powerable {
-  powered: boolean;
+export interface Networkable {
   network: Network;
-  directNetwork: Network;
 }
 
 export interface Vector {

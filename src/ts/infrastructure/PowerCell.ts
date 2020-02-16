@@ -1,16 +1,14 @@
-import { Drawable, Powerable, Destroyable } from "../util";
-import { Infrastructure } from "./common";
+import { Drawable, Networkable, Destroyable } from "../util";
 import * as world from "../environment/world";
-import * as network from "./network";
+import { Network } from "./network";
 
 const RANGE = 150;
 
-export class PowerCell implements Drawable, Powerable, Destroyable {
+export class PowerCell implements Drawable, Networkable, Destroyable {
   x: number;
   y: number;
   powered = true;
-  network = new Set<Infrastructure>();
-  directNetwork = new Set<Infrastructure>();
+  network = new Network(this);
   radius: number = 32;
   width: number = this.radius * 2;
   height: number = this.radius * 2;
@@ -22,12 +20,12 @@ export class PowerCell implements Drawable, Powerable, Destroyable {
   }
 
   update() {
-    network.recalculate(this, RANGE);
+    this.network.recalculate(RANGE);
   }
 
   destroy() {
     world.destroy(this);
-    network.recalculate(this, 0);
+    this.network.recalculate(0);
   }
 
   draw(ctx: CanvasRenderingContext2D) {
