@@ -1,12 +1,17 @@
-import { Drawable, Tickable } from "../util";
+import { Drawable, Tickable, Powerable, Destroyable } from "../util";
 import { Asteroid } from "../environment/asteroid";
 import * as world from "../environment/world";
+import { Infrastructure } from "./common";
+import * as network from "./network";
 
 const RANGE = 150;
 
-export class Miner implements Drawable, Tickable {
+export class Miner implements Drawable, Tickable, Powerable, Destroyable {
   x: number;
   y: number;
+  powered = false;
+  network = new Set<Infrastructure>();
+  directNetwork = new Set<Infrastructure>();
   radius: number = 16;
   material: number = 0;
   width: number = this.radius * 2;
@@ -16,6 +21,7 @@ export class Miner implements Drawable, Tickable {
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
+    this.update();
   }
 
   tick() {
@@ -27,11 +33,19 @@ export class Miner implements Drawable, Tickable {
     }
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  update() {
     this.targets = [...world.asteroids].filter(as => {
       return Math.hypot(as.x - this.x, as.y - this.y) <= RANGE;
     });
+    network.recalculate(this, RANGE);
+  }
 
+  destroy() {
+    world.destroy(this);
+    network.recalculate(this, 0);
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
     ctx.strokeStyle = "white";
     for (const target of this.targets) {
       ctx.beginPath();

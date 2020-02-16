@@ -1,7 +1,9 @@
 import { Asteroid } from "./asteroid";
 import * as random from "../random";
-import { Drawable, Tickable } from "../util";
-import { Miner } from "../infrastructure/miner";
+import { Drawable, Tickable, Updatable } from "../util";
+import { Miner, PowerNode, PowerCell } from "../infrastructure/index";
+
+type Infrastructure = Miner | PowerNode;
 
 interface Collection<T> {
   set: Set<T>;
@@ -33,6 +35,18 @@ function isMiner(x: unknown): x is Miner {
   return typeof x === "object" && !!x && x.constructor.name === "Miner";
 }
 
+function isPowerNode(x: unknown): x is PowerNode {
+  return typeof x === "object" && !!x && x.constructor.name === "PowerNode";
+}
+
+function isPowerCell(x: unknown): x is PowerCell {
+  return typeof x === "object" && !!x && x.constructor.name === "PowerCell";
+}
+
+function isInfrastructure(x: unknown): x is Infrastructure {
+  return isMiner(x) || isPowerNode(x) || isPowerCell(x);
+}
+
 function isAsteroid(x: unknown): x is Asteroid {
   return typeof x === "object" && !!x && x.constructor.name === "Asteroid";
 }
@@ -41,25 +55,20 @@ function isDrawable(x: unknown): x is Drawable {
   return typeof x === "object" && !!x && typeof (x as any).draw === "function";
 }
 
+function isUpdatable(x: unknown): x is Updatable {
+  return (
+    typeof x === "object" && !!x && typeof (x as any).update === "function"
+  );
+}
+
 function isTickable(x: unknown): x is Tickable {
   return typeof x === "object" && !!x && typeof (x as any).tick === "function";
 }
 
 setInterval(tick, 100);
 
-function collection<T>(test: (x: unknown) => x is T): Collection<T> {
-  return { set: new Set<T>(), test };
-}
-
-const collections: Record<string, Collection<any>> = {
-  miner: collection(isMiner),
-  asteroid: collection(isAsteroid),
-  drawable: collection(isDrawable),
-  tickable: collection(isTickable),
-};
-
 export function register(x: unknown) {
-  for (const { set, test } of Object.values(collections)) {
+  for (const { set, test } of collections) {
     if (test(x)) {
       set.add(x);
     }
@@ -67,17 +76,36 @@ export function register(x: unknown) {
 }
 
 export function destroy(x: unknown) {
-  for (const { set, test } of Object.values(collections)) {
+  for (const { set, test } of collections) {
     if (test(x)) {
       set.delete(x);
     }
   }
 }
 
-export const miners = collections.miner.set;
-export const asteroids = collections.asteroid.set;
-export const drawables = collections.drawable.set;
-export const tickables = collections.tickable.set;
+export function update() {
+  for (const updatable of updatables) {
+    if ((updatable as any).__ghost) {
+      updatable.update();
+    }
+  }
+}
+
+function collection<T>(test: (x: unknown) => x is T) {
+  const collection: Collection<T> = { set: new Set(), test };
+  collections.push(collection);
+  return collection.set;
+}
+
+const collections: Collection<any>[] = [];
+
+export const miners = collection(isMiner);
+export const asteroids = collection(isAsteroid);
+export const infrastructures = collection(isInfrastructure);
+export const powerNodes = collection(isPowerNode);
+export const drawables = collection(isDrawable);
+export const updatables = collection(isUpdatable);
+export const tickables = collection(isTickable);
 
 for (const asteroid of generateAsteroids(30)) {
   register(asteroid);

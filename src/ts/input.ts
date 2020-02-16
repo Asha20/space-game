@@ -3,6 +3,7 @@ import { Vector } from "./util";
 export class Keyboard {
   downMap: Map<string, boolean> = new Map();
   pressedMap: Map<string, boolean> = new Map();
+  lastKey: string = "";
   keydownHandler: (e: KeyboardEvent) => void;
   keyupHandler: (e: KeyboardEvent) => void;
 
@@ -10,6 +11,7 @@ export class Keyboard {
     this.keydownHandler = (e: KeyboardEvent) => {
       this.downMap.set(e.key, true);
       this.pressedMap.set(e.key, true);
+      this.lastKey = e.key;
     };
 
     this.keyupHandler = (e: KeyboardEvent) => {

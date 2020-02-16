@@ -22,7 +22,6 @@ export class Asteroid implements Drawable, Destroyable {
     this.mass = mass / 6;
     const colorIndex = random.range(0, colors.length - 1);
     this.color = colors[colorIndex];
-    world.register(this);
   }
 
   get radius() {

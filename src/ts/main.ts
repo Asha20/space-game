@@ -1,7 +1,8 @@
 import { Keyboard } from "./input";
 import { Camera } from "./camera";
-import { Miner } from "./infrastructure/miner";
+import { Miner, PowerNode, PowerCell } from "./infrastructure/index";
 import * as world from "./environment/world";
+import { InfrastructureConstructor } from "./infrastructure/common";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 if (!canvas) {
@@ -39,19 +40,39 @@ const camera = new Camera(ctx, ({ up, down, left, right, zoomIn, zoomOut }) => {
 
 const cameraMouse = camera.mouse;
 
-const ghostMiner = new Miner(cameraMouse.x, cameraMouse.y);
-world.register(ghostMiner);
+const ghostTypes = [Miner, PowerNode, PowerCell];
+
+let Ghost: InfrastructureConstructor = PowerNode;
+let ghost = new Ghost(0, 0);
+(ghost as any).__ghost = true;
+world.register(ghost);
 
 function draw() {
-  ghostMiner.x = cameraMouse.x;
-  ghostMiner.y = cameraMouse.y;
+  ghost.x = cameraMouse.x;
+  ghost.y = cameraMouse.y;
+  world.update();
   camera.render(world.drawables);
 
+  if (keyboard.pressed("1") || keyboard.pressed("2") || keyboard.pressed("3")) {
+    const index = Number(keyboard.lastKey) - 1;
+    ghost.destroy();
+    Ghost = ghostTypes[index];
+    ghost = new Ghost(cameraMouse.x, cameraMouse.y);
+    (ghost as any).__ghost = true;
+    world.register(ghost);
+  }
+
+  if (keyboard.pressed("4")) {
+    ghost.destroy();
+  }
+
   if (cameraMouse.pressed()) {
-    const miner = new Miner(cameraMouse.x, cameraMouse.y);
+    const miner = new Ghost(cameraMouse.x, cameraMouse.y);
     world.register(miner);
   }
 
   requestAnimationFrame(draw);
 }
 requestAnimationFrame(draw);
+
+(window as any).world = world;
