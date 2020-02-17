@@ -10,7 +10,6 @@ export class Miner implements Drawable, Tickable, Networkable, Destroyable {
   y: number;
   network = new Network(this);
   radius: number = 16;
-  material: number = 0;
   width: number = this.radius * 2;
   height: number = this.radius * 2;
   targets: Asteroid[] = [];
@@ -22,18 +21,28 @@ export class Miner implements Drawable, Tickable, Networkable, Destroyable {
   }
 
   tick() {
+    if (!this.network.powered) {
+      return;
+    }
+
     for (const target of this.targets) {
       if (target.mass > 0) {
         target.mass -= 1;
-        this.material += 1;
+        world.materials[target.kind.type] += 1;
+      } else {
+        this.recalculateTargets();
       }
     }
   }
 
-  update() {
+  recalculateTargets() {
     this.targets = [...world.asteroids].filter(as => {
       return Math.hypot(as.x - this.x, as.y - this.y) <= RANGE;
     });
+  }
+
+  update() {
+    this.recalculateTargets();
     this.network.recalculate(RANGE);
   }
 
@@ -43,6 +52,15 @@ export class Miner implements Drawable, Tickable, Networkable, Destroyable {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
+    ctx.strokeStyle = ctx.fillStyle = this.network.powered ? "white" : "red";
+
+    for (const target of this.network.local) {
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(target.x, target.y);
+      ctx.stroke();
+    }
+
     ctx.strokeStyle = "white";
     for (const target of this.targets) {
       ctx.beginPath();

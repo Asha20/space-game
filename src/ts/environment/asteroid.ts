@@ -2,7 +2,36 @@ import { Drawable, Vector, Destroyable } from "../util";
 import * as random from "../random";
 import * as world from "./world";
 
-const colors = ["#ff4c4c", "#ff9d4c", "#3dcd3d", "#2e9c9c"];
+export enum AsteroidType {
+  Redonium = "redonium",
+  Yellorium = "yellorium",
+  Blutonium = "blutonium",
+  Greenorium = "greenorium",
+}
+
+interface AsteroidKind {
+  type: AsteroidType;
+  color: string;
+}
+
+const kinds: AsteroidKind[] = [
+  {
+    type: AsteroidType.Redonium,
+    color: "#ff4c4c",
+  },
+  {
+    type: AsteroidType.Greenorium,
+    color: "#3dcd3d",
+  },
+  {
+    type: AsteroidType.Blutonium,
+    color: "#2e9c9c",
+  },
+  {
+    type: AsteroidType.Yellorium,
+    color: "#ff9d4c",
+  },
+];
 
 function radians(degrees: number) {
   return (degrees / 180) * Math.PI;
@@ -12,7 +41,7 @@ export class Asteroid implements Drawable, Destroyable {
   x: number;
   y: number;
   mass: number;
-  color: string;
+  kind: AsteroidKind;
   seed: number;
 
   constructor(x: number, y: number, mass: number) {
@@ -20,8 +49,7 @@ export class Asteroid implements Drawable, Destroyable {
     this.y = y;
     this.seed = random.getSeed();
     this.mass = mass / 6;
-    const colorIndex = random.range(0, colors.length - 1);
-    this.color = colors[colorIndex];
+    this.kind = random.choose(kinds);
   }
 
   get radius() {
@@ -50,7 +78,7 @@ export class Asteroid implements Drawable, Destroyable {
     }
 
     random.setSeed(this.seed);
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = this.kind.color;
 
     const vertices = 10;
     let angle = 0;
@@ -65,7 +93,7 @@ export class Asteroid implements Drawable, Destroyable {
       points.push(point);
     }
     let prev = points[0];
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = this.kind.color;
     ctx.beginPath();
     ctx.moveTo(prev.x, prev.y);
     for (let i = 1; i < points.length; i++) {

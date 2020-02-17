@@ -2,6 +2,7 @@ import { Keyboard } from "./input";
 import { Camera } from "./camera";
 import { Miner, PowerNode, PowerCell } from "./infrastructure/index";
 import * as world from "./environment/world";
+import * as hud from "./hud";
 import { InfrastructureConstructor } from "./infrastructure/common";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
@@ -52,6 +53,7 @@ function draw() {
   ghost.y = cameraMouse.y;
   world.update();
   camera.render(world.drawables);
+  hud.render();
 
   if (keyboard.pressed("1") || keyboard.pressed("2") || keyboard.pressed("3")) {
     const index = Number(keyboard.lastKey) - 1;

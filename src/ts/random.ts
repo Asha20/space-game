@@ -33,3 +33,8 @@ export function rangeFloat(min: number, max: number) {
 export function dice(sides: number) {
   return next() % sides === 0;
 }
+
+export function choose<T>(array: T[]) {
+  const index = range(0, array.length - 1);
+  return array[index];
+}

@@ -6,6 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Space Game</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -13,15 +17,48 @@
 
     body {
       overflow: hidden;
+      display: flex;
     }
 
     html, body, #app {
       width: 100%;
       height: 100%;
     }
+
+    .hud {
+      width: 300px;
+      padding: 10px;
+      background-color: #222;
+      border-right: 3px solid #111;
+      color: white;
+      font-family: monospace;
+    }
+
+    .hud h2 {
+      text-align: center;
+    }
+
+    .hud ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    .hud li {
+      list-style-type: none;
+    }
   </style>
 </head>
 <body>
+  <section class="hud">
+    <h2>Materials</h2>
+
+    <ul>
+      <li>Redonium: <span class="redonium">0</span></li>
+      <li>Greenorium: <span class="greenorium">0</span></li>
+      <li>Blutonium: <span class="blutonium">0</span></li>
+      <li>Yellorium: <span class="yellorium">0</span></li>
+    </ul>
+  </section>
   <canvas id="app"></canvas>
 </body>
 </html>

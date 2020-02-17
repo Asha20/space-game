@@ -1,4 +1,4 @@
-import { Asteroid } from "./asteroid";
+import { Asteroid, AsteroidType } from "./asteroid";
 import * as random from "../random";
 import { Drawable, Tickable, Updatable } from "../util";
 import { Miner, PowerNode, PowerCell } from "../infrastructure/index";
@@ -106,6 +106,13 @@ export const powerNodes = collection(isPowerNode);
 export const drawables = collection(isDrawable);
 export const updatables = collection(isUpdatable);
 export const tickables = collection(isTickable);
+
+export const materials: Record<AsteroidType, number> = {
+  redonium: 0,
+  greenorium: 0,
+  blutonium: 0,
+  yellorium: 0,
+};
 
 for (const asteroid of generateAsteroids(30)) {
   register(asteroid);

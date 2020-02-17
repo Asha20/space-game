@@ -30,7 +30,7 @@ export class Camera {
     this.ctx = context;
     this.canvasWidth = context.canvas.width;
     this.canvasHeight = context.canvas.height;
-    this.mouse = new Mouse(({ x, y }) => {
+    this.mouse = new Mouse(this.ctx.canvas, ({ x, y }) => {
       return {
         x: x / this.zoom + this.x - this.width / 2,
         y: y / this.zoom + this.y - this.height / 2,

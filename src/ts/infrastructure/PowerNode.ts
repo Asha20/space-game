@@ -32,7 +32,8 @@ export class PowerNode
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = this.network.powered ? "white" : "red";
+    ctx.strokeStyle = ctx.fillStyle = this.network.powered ? "white" : "red";
+
     for (const target of this.network.local) {
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);
@@ -40,14 +41,19 @@ export class PowerNode
       ctx.stroke();
     }
 
-    ctx.fillStyle = this.network.powered ? "white" : "red";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fill();
+    if (this.network.powered) {
+      ctx.fill();
+    } else {
+      ctx.stroke();
+      ctx.fillStyle = "black";
+      ctx.fill();
+    }
 
-    ctx.fillStyle = "white";
     const size = this.network.global.size;
     const id = this.id;
+    ctx.fillStyle = "white";
     ctx.fillText(`${id}, ${size}`, this.x, this.y - 20);
   }
 }

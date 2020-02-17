@@ -53,7 +53,9 @@ export class Mouse {
   mouseupHandler: (e: MouseEvent) => void;
   mousemoveHandler: (e: MouseEvent) => void;
 
-  constructor(recalculate?: (pos: Vector) => Vector) {
+  constructor(el: HTMLElement, recalculate?: (pos: Vector) => Vector) {
+    const rect = el.getBoundingClientRect();
+
     this.mousedownHandler = () => {
       this.isDown = true;
       this.isPressed = true;
@@ -65,8 +67,8 @@ export class Mouse {
     };
 
     this.mousemoveHandler = (e: MouseEvent) => {
-      this.absX = e.clientX;
-      this.absY = e.clientY;
+      this.absX = e.clientX - rect.left;
+      this.absY = e.clientY - rect.top;
       this.recalculate();
     };
 
