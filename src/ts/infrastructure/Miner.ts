@@ -9,7 +9,7 @@ const RANGE = 150;
 export class Miner implements Drawable, Tickable, Networkable, Destroyable {
   x: number;
   y: number;
-  network = new Network(this, isPowerNode);
+  network: Network = new Network(this, isPowerNode);
   radius: number = 16;
   width: number = this.radius * 2;
   height: number = this.radius * 2;
@@ -53,14 +53,7 @@ export class Miner implements Drawable, Tickable, Networkable, Destroyable {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = ctx.fillStyle = this.network.powered ? "white" : "red";
-
-    for (const target of this.network.local) {
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(target.x, target.y);
-      ctx.stroke();
-    }
+    Network.render(ctx, this);
 
     ctx.strokeStyle = "white";
     for (const target of this.targets) {

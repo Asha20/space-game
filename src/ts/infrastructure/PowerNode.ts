@@ -8,7 +8,7 @@ export class PowerNode
   implements Drawable, Updatable, Networkable, Destroyable {
   x: number;
   y: number;
-  network = new Network(this);
+  network: Network = new Network(this);
   radius: number = 4;
   width: number = this.radius * 2;
   height: number = this.radius * 2;
@@ -29,15 +29,9 @@ export class PowerNode
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = ctx.fillStyle = this.network.powered ? "white" : "red";
+    Network.render(ctx, this);
 
-    for (const target of this.network.local) {
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(target.x, target.y);
-      ctx.stroke();
-    }
-
+    ctx.fillStyle = this.network.powered ? "white" : "red";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     if (this.network.powered) {

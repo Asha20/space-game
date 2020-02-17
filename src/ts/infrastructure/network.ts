@@ -3,6 +3,10 @@ import * as world from "../environment/world";
 
 const connectAlways = () => true;
 
+function distance(obj1: Infrastructure, obj2: Infrastructure) {
+  return Math.hypot(obj1.x - obj2.x, obj1.y - obj2.y);
+}
+
 export class Network {
   global = new Set<Infrastructure>();
   local = new Set<Infrastructure>();
@@ -15,6 +19,16 @@ export class Network {
   ) {
     this.origin = origin;
     this.canConnect = canConnect;
+  }
+
+  static render(ctx: CanvasRenderingContext2D, origin: Infrastructure) {
+    ctx.strokeStyle = origin.network.powered ? "white" : "red";
+    for (const target of origin.network.local) {
+      ctx.beginPath();
+      ctx.moveTo(origin.x, origin.y);
+      ctx.lineTo(target.x, target.y);
+      ctx.stroke();
+    }
   }
 
   get powered(): boolean {
@@ -65,53 +79,3 @@ export class Network {
     this.global = _reform(this.origin, new Set());
   }
 }
-
-function distance(obj1: Infrastructure, obj2: Infrastructure) {
-  return Math.hypot(obj1.x - obj2.x, obj1.y - obj2.y);
-}
-
-// export function recalculate(origin: Infrastructure, range: number) {
-//   const modified = new Set<Infrastructure>([origin]);
-
-//   for (const other of world.infrastructures) {
-//     if (other === origin) {
-//       continue;
-//     }
-
-//     const inRange = distance(origin, other) <= range;
-
-//     if (origin.directNetwork.has(other) && !inRange) {
-//       origin.directNetwork.delete(other);
-//       other.directNetwork.delete(origin);
-//       modified.add(other);
-//     } else if (!origin.directNetwork.has(other) && inRange) {
-//       origin.directNetwork.add(other);
-//       other.directNetwork.add(origin);
-//       modified.add(other);
-//     }
-//   }
-
-//   for (const structure of modified) {
-//     rebuildNetwork(structure);
-//   }
-// }
-
-// function rebuildNetwork(origin: Infrastructure) {
-//   function _rebuildNetwork(
-//     current: Infrastructure,
-//     network: Set<Infrastructure>,
-//   ) {
-//     if (network.has(current)) {
-//       return network;
-//     }
-
-//     network.add(current);
-//     current.network = network;
-//     for (const other of current.directNetwork) {
-//       _rebuildNetwork(other, network);
-//     }
-//     return network;
-//   }
-
-//   origin.network = _rebuildNetwork(origin, new Set());
-// }

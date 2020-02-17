@@ -30,14 +30,7 @@ export class PowerCell implements Drawable, Networkable, Destroyable {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = ctx.fillStyle = this.network.powered ? "white" : "red";
-
-    for (const target of this.network.local) {
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(target.x, target.y);
-      ctx.stroke();
-    }
+    Network.render(ctx, this);
 
     ctx.fillStyle = "magenta";
     ctx.beginPath();
