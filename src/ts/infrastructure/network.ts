@@ -1,17 +1,20 @@
 import { Infrastructure } from "./common";
 import * as world from "../environment/world";
-import { PowerNode } from "./PowerNode";
-import { PowerCell } from "./PowerCell";
+
+const connectAlways = () => true;
 
 export class Network {
-  // nodes = new Set<PowerNode>();
-  // cells = new Set<PowerCell>();
   global = new Set<Infrastructure>();
   local = new Set<Infrastructure>();
   origin: Infrastructure;
+  canConnect: (other: Infrastructure) => boolean;
 
-  constructor(origin: Infrastructure) {
+  constructor(
+    origin: Infrastructure,
+    canConnect: (other: Infrastructure) => boolean = connectAlways,
+  ) {
     this.origin = origin;
+    this.canConnect = canConnect;
   }
 
   get powered(): boolean {
@@ -23,7 +26,7 @@ export class Network {
     const modified = new Set<Infrastructure>([origin]);
 
     for (const other of world.infrastructures) {
-      if (other === origin) {
+      if (other === origin || !this.canConnect(other)) {
         continue;
       }
 

@@ -1,13 +1,10 @@
 import { Asteroid, AsteroidType } from "./asteroid";
 import * as random from "../random";
-import { Drawable, Tickable, Updatable } from "../util";
-import { Miner, PowerNode, PowerCell } from "../infrastructure/index";
+import * as is from "../is";
 
-type Infrastructure = Miner | PowerNode;
-
-interface Collection<T> {
+interface Collection<T extends object> {
   set: Set<T>;
-  test: (x: unknown) => x is T;
+  test: (x: object) => x is T;
 }
 
 const width = 1000;
@@ -31,43 +28,9 @@ function tick() {
   }
 }
 
-function isMiner(x: unknown): x is Miner {
-  return typeof x === "object" && !!x && x.constructor.name === "Miner";
-}
-
-function isPowerNode(x: unknown): x is PowerNode {
-  return typeof x === "object" && !!x && x.constructor.name === "PowerNode";
-}
-
-function isPowerCell(x: unknown): x is PowerCell {
-  return typeof x === "object" && !!x && x.constructor.name === "PowerCell";
-}
-
-function isInfrastructure(x: unknown): x is Infrastructure {
-  return isMiner(x) || isPowerNode(x) || isPowerCell(x);
-}
-
-function isAsteroid(x: unknown): x is Asteroid {
-  return typeof x === "object" && !!x && x.constructor.name === "Asteroid";
-}
-
-function isDrawable(x: unknown): x is Drawable {
-  return typeof x === "object" && !!x && typeof (x as any).draw === "function";
-}
-
-function isUpdatable(x: unknown): x is Updatable {
-  return (
-    typeof x === "object" && !!x && typeof (x as any).update === "function"
-  );
-}
-
-function isTickable(x: unknown): x is Tickable {
-  return typeof x === "object" && !!x && typeof (x as any).tick === "function";
-}
-
 setInterval(tick, 100);
 
-export function register(x: unknown) {
+export function register(x: object) {
   for (const { set, test } of collections) {
     if (test(x)) {
       set.add(x);
@@ -75,7 +38,7 @@ export function register(x: unknown) {
   }
 }
 
-export function destroy(x: unknown) {
+export function destroy(x: object) {
   for (const { set, test } of collections) {
     if (test(x)) {
       set.delete(x);
@@ -91,7 +54,7 @@ export function update() {
   }
 }
 
-function collection<T>(test: (x: unknown) => x is T) {
+function collection<T extends object>(test: (x: object) => x is T) {
   const collection: Collection<T> = { set: new Set(), test };
   collections.push(collection);
   return collection.set;
@@ -99,13 +62,13 @@ function collection<T>(test: (x: unknown) => x is T) {
 
 const collections: Collection<any>[] = [];
 
-export const miners = collection(isMiner);
-export const asteroids = collection(isAsteroid);
-export const infrastructures = collection(isInfrastructure);
-export const powerNodes = collection(isPowerNode);
-export const drawables = collection(isDrawable);
-export const updatables = collection(isUpdatable);
-export const tickables = collection(isTickable);
+export const miners = collection(is.miner);
+export const asteroids = collection(is.asteroid);
+export const infrastructures = collection(is.infrastructure);
+export const powerNodes = collection(is.powerNode);
+export const drawables = collection(is.drawable);
+export const updatables = collection(is.updatable);
+export const tickables = collection(is.tickable);
 
 export const materials: Record<AsteroidType, number> = {
   redonium: 0,

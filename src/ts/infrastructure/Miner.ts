@@ -2,13 +2,14 @@ import { Drawable, Tickable, Networkable, Destroyable } from "../util";
 import { Asteroid } from "../environment/asteroid";
 import * as world from "../environment/world";
 import { Network } from "./network";
+import { powerNode as isPowerNode } from "../is";
 
 const RANGE = 150;
 
 export class Miner implements Drawable, Tickable, Networkable, Destroyable {
   x: number;
   y: number;
-  network = new Network(this);
+  network = new Network(this, isPowerNode);
   radius: number = 16;
   width: number = this.radius * 2;
   height: number = this.radius * 2;

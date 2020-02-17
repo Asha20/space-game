@@ -4,13 +4,10 @@ import * as world from "../environment/world";
 
 let RANGE = 150;
 
-let id = 1;
-
 export class PowerNode
   implements Drawable, Updatable, Networkable, Destroyable {
   x: number;
   y: number;
-  id: number = id++;
   network = new Network(this);
   radius: number = 4;
   width: number = this.radius * 2;
@@ -52,8 +49,7 @@ export class PowerNode
     }
 
     const size = this.network.global.size;
-    const id = this.id;
     ctx.fillStyle = "white";
-    ctx.fillText(`${id}, ${size}`, this.x, this.y - 20);
+    ctx.fillText(`${size}`, this.x, this.y - 20);
   }
 }

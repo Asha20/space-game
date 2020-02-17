@@ -1,6 +1,7 @@
 import { Drawable, Networkable, Destroyable } from "../util";
 import * as world from "../environment/world";
 import { Network } from "./network";
+import { powerNode as isPowerNode } from "../is";
 
 const RANGE = 150;
 
@@ -8,7 +9,7 @@ export class PowerCell implements Drawable, Networkable, Destroyable {
   x: number;
   y: number;
   powered = true;
-  network = new Network(this);
+  network: Network = new Network(this, isPowerNode);
   radius: number = 32;
   width: number = this.radius * 2;
   height: number = this.radius * 2;
