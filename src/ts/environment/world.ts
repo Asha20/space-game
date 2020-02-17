@@ -24,7 +24,9 @@ function generateAsteroids(amount: number) {
 
 function tick() {
   for (const tickable of tickables) {
-    tickable.tick();
+    if (!tickable.ghost) {
+      tickable.tick();
+    }
   }
 }
 
@@ -48,7 +50,7 @@ export function destroy(x: object) {
 
 export function update() {
   for (const updatable of updatables) {
-    if ((updatable as any).__ghost) {
+    if (updatable.ghost) {
       updatable.update();
     }
   }

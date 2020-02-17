@@ -5,7 +5,7 @@ import {
   Infrastructure,
 } from "./infrastructure/index";
 import { Asteroid } from "./environment/asteroid";
-import { Drawable, Tickable, Updatable } from "./util";
+import { Drawable, Tickable, Updatable, Ghostable } from "./util";
 
 export function miner(x: object): x is Miner {
   return x.constructor.name === "Miner";
@@ -31,10 +31,14 @@ export function drawable(x: object): x is Drawable {
   return typeof (x as any).draw === "function";
 }
 
+export function ghostable(x: object): x is Ghostable {
+  return typeof (x as any).ghost === "boolean";
+}
+
 export function updatable(x: object): x is Updatable {
-  return typeof (x as any).update === "function";
+  return ghostable(x) && typeof (x as any).update === "function";
 }
 
 export function tickable(x: object): x is Tickable {
-  return typeof (x as any).tick === "function";
+  return ghostable(x) && typeof (x as any).tick === "function";
 }

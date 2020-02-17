@@ -8,6 +8,7 @@ export class PowerNode
   implements Drawable, Updatable, Networkable, Destroyable {
   x: number;
   y: number;
+  ghost = false;
   network: Network = new Network(this);
   radius: number = 4;
   width: number = this.radius * 2;

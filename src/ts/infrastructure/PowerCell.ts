@@ -8,6 +8,7 @@ const RANGE = 150;
 export class PowerCell implements Drawable, Networkable, Destroyable {
   x: number;
   y: number;
+  ghost = false;
   powered = true;
   network: Network = new Network(this, isPowerNode);
   radius: number = 32;

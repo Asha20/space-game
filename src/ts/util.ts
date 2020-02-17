@@ -8,11 +8,15 @@ export interface Drawable {
   draw(ctx: CanvasRenderingContext2D): void;
 }
 
-export interface Updatable {
+export interface Ghostable {
+  ghost: boolean;
+}
+
+export interface Updatable extends Ghostable {
   update(): void;
 }
 
-export interface Tickable {
+export interface Tickable extends Ghostable {
   tick(): void;
 }
 

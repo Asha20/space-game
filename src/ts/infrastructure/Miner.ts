@@ -9,6 +9,7 @@ const RANGE = 150;
 export class Miner implements Drawable, Tickable, Networkable, Destroyable {
   x: number;
   y: number;
+  ghost = false;
   network: Network = new Network(this, isPowerNode);
   radius: number = 16;
   width: number = this.radius * 2;

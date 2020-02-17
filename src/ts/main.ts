@@ -45,7 +45,7 @@ const ghostTypes = [Miner, PowerNode, PowerCell];
 
 let Ghost: InfrastructureConstructor = PowerNode;
 let ghost = new Ghost(0, 0);
-(ghost as any).__ghost = true;
+ghost.ghost = true;
 world.register(ghost);
 
 function draw() {
@@ -60,7 +60,7 @@ function draw() {
     ghost.destroy();
     Ghost = ghostTypes[index];
     ghost = new Ghost(cameraMouse.x, cameraMouse.y);
-    (ghost as any).__ghost = true;
+    ghost.ghost = true;
     world.register(ghost);
   }
 
