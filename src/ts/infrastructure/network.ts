@@ -1,6 +1,6 @@
 import { Infrastructure } from "./common";
 import * as world from "../environment/world";
-import { distance } from "../util";
+import { distance, Vector, Networkable } from "../util";
 
 const connectAlways = () => true;
 
@@ -19,7 +19,7 @@ export class Network {
     this.canConnect = canConnect;
   }
 
-  static render(ctx: CanvasRenderingContext2D, origin: Infrastructure) {
+  static render(ctx: CanvasRenderingContext2D, origin: Vector & Networkable) {
     ctx.strokeStyle = origin.network.powered ? "white" : "red";
     for (const target of origin.network.local) {
       ctx.beginPath();

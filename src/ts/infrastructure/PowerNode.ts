@@ -18,47 +18,31 @@ export class PowerNode
   artificial = true;
   ghost = false;
   network: Network = new Network(this);
-  radius: number = 4;
-  width: number = this.radius * 2;
-  height: number = this.radius * 2;
+  radius = 4;
+  width = this.radius * 2;
+  height = this.radius * 2;
 
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
-    this.update();
   }
 
-  update() {
-    this.network.recalculate(RANGE);
-  }
+  update() {}
 
-  destroy() {
-    world.destroy(this);
-    this.network.recalculate(0);
-  }
+  destroy() {}
 
   draw(ctx: CanvasRenderingContext2D) {
-    Network.render(ctx, this);
-
-    ctx.fillStyle = this.network.powered ? "white" : "red";
+    ctx.fillStyle = ctx.strokeStyle = this.network.powered ? "white" : "red";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     if (this.network.powered) {
       ctx.fill();
     } else {
       ctx.stroke();
-      ctx.fillStyle = "black";
-      ctx.fill();
     }
 
     const size = this.network.global.size;
     ctx.fillStyle = "white";
     ctx.fillText(`${size}`, this.x, this.y - 20);
-
-    if (this.selected) {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius + 5, 0, Math.PI * 2);
-      ctx.stroke();
-    }
   }
 }

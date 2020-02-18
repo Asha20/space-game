@@ -12,39 +12,24 @@ export class PowerCell
   selected = false;
   artificial = true;
   ghost = false;
-  powered = true;
   network: Network = new Network(this, isPowerNode);
-  radius: number = 32;
-  width: number = this.radius * 2;
-  height: number = this.radius * 2;
+  radius = 32;
+  width = this.radius * 2;
+  height = this.radius * 2;
 
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
-    this.update();
   }
 
-  update() {
-    this.network.recalculate(RANGE);
-  }
+  update() {}
 
-  destroy() {
-    world.destroy(this);
-    this.network.recalculate(0);
-  }
+  destroy() {}
 
   draw(ctx: CanvasRenderingContext2D) {
-    Network.render(ctx, this);
-
     ctx.fillStyle = "magenta";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fill();
-
-    if (this.selected) {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius + 5, 0, Math.PI * 2);
-      ctx.stroke();
-    }
   }
 }

@@ -12,6 +12,8 @@ import {
   Ghostable,
   Selectable,
   Destroyable,
+  Networkable,
+  Vector,
 } from "./util";
 
 export function miner(x: object): x is Miner {
@@ -58,5 +60,17 @@ export function destroyable(x: object): x is Destroyable {
   return (
     typeof (x as any).artificial === "boolean" &&
     typeof (x as any).destroy === "function"
+  );
+}
+
+export function networkable(x: object): x is Networkable {
+  return (
+    (x as any).network && (x as any).network.constructor.name === "Network"
+  );
+}
+
+export function vector(obj: object): obj is Vector {
+  return (
+    typeof (obj as any).x === "number" && typeof (obj as any).y === "number"
   );
 }
