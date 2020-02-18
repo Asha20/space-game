@@ -1,10 +1,27 @@
 import { Asteroid, AsteroidType } from "./asteroid";
 import * as random from "../random";
 import * as is from "../is";
+import { Drawable } from "../util";
 
 interface Collection<T extends object> {
   set: Set<T>;
   test: (x: object) => x is T;
+}
+
+export interface RGBY<T> {
+  redonium: T;
+  greenorium: T;
+  blutonium: T;
+  yellorium: T;
+}
+
+export function rgby<T>(
+  redonium: T,
+  greenorium: T,
+  blutonium: T,
+  yellorium: T,
+): RGBY<T> {
+  return { redonium, greenorium, blutonium, yellorium };
 }
 
 const width = 1000;
@@ -56,6 +73,41 @@ export function update() {
   }
 }
 
+function isInside(obj: Drawable, x: number, y: number) {
+  const halfWidth = obj.width / 2;
+  const halfHeight = obj.height / 2;
+  return (
+    x >= obj.x - halfWidth &&
+    x <= obj.x + halfWidth &&
+    y >= obj.y - halfHeight &&
+    y <= obj.y + halfHeight
+  );
+}
+
+export function select(x: number, y: number) {
+  for (const selectable of selectables) {
+    if (selectable.ghost) {
+      continue;
+    }
+    selectable.selected = isInside(selectable, x, y);
+  }
+}
+
+export function deleteSelection() {
+  for (const selectable of selectables) {
+    if (
+      !selectable.selected ||
+      selectable.ghost ||
+      !is.destroyable(selectable) ||
+      !selectable.artificial
+    ) {
+      continue;
+    }
+
+    selectable.destroy();
+  }
+}
+
 function collection<T extends object>(test: (x: object) => x is T) {
   const collection: Collection<T> = { set: new Set(), test };
   collections.push(collection);
@@ -71,6 +123,7 @@ export const powerNodes = collection(is.powerNode);
 export const drawables = collection(is.drawable);
 export const updatables = collection(is.updatable);
 export const tickables = collection(is.tickable);
+export const selectables = collection(is.selectable);
 
 export const materials: Record<AsteroidType, number> = {
   redonium: 0,

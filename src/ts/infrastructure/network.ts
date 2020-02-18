@@ -1,13 +1,11 @@
 import { Infrastructure } from "./common";
 import * as world from "../environment/world";
+import { distance } from "../util";
 
 const connectAlways = () => true;
 
-function distance(obj1: Infrastructure, obj2: Infrastructure) {
-  return Math.hypot(obj1.x - obj2.x, obj1.y - obj2.y);
-}
-
 export class Network {
+  materials = world.rgby(0, 0, 0, 0);
   global = new Set<Infrastructure>();
   local = new Set<Infrastructure>();
   origin: Infrastructure;
@@ -32,7 +30,9 @@ export class Network {
   }
 
   get powered(): boolean {
-    return [...this.global].some(x => x.constructor.name === "PowerCell");
+    return [...this.global].some(
+      x => x.constructor.name === "PowerCell" && !x.ghost,
+    );
   }
 
   recalculate(range: number) {
@@ -63,18 +63,19 @@ export class Network {
   }
 
   reform() {
-    function _reform(current: Infrastructure, network: Set<Infrastructure>) {
+    const _reform = (current: Infrastructure, network: Set<Infrastructure>) => {
       if (network.has(current)) {
         return network;
       }
 
       network.add(current);
       current.network.global = network;
+      current.network.materials = this.materials;
       for (const other of current.network.local) {
         _reform(other, network);
       }
       return network;
-    }
+    };
 
     this.global = _reform(this.origin, new Set());
   }

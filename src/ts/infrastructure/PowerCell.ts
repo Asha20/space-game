@@ -1,13 +1,16 @@
-import { Drawable, Networkable, Destroyable } from "../util";
+import { Drawable, Networkable, Destroyable, Selectable } from "../util";
 import * as world from "../environment/world";
 import { Network } from "./network";
 import { powerNode as isPowerNode } from "../is";
 
 const RANGE = 150;
 
-export class PowerCell implements Drawable, Networkable, Destroyable {
+export class PowerCell
+  implements Drawable, Networkable, Destroyable, Selectable {
   x: number;
   y: number;
+  selected = false;
+  artificial = true;
   ghost = false;
   powered = true;
   network: Network = new Network(this, isPowerNode);
@@ -37,5 +40,11 @@ export class PowerCell implements Drawable, Networkable, Destroyable {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fill();
+
+    if (this.selected) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius + 5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Drawable, Vector, Destroyable } from "../util";
+import { Drawable, Vector, Destroyable, Selectable } from "../util";
 import * as random from "../random";
 import * as world from "./world";
 
@@ -37,9 +37,12 @@ function radians(degrees: number) {
   return (degrees / 180) * Math.PI;
 }
 
-export class Asteroid implements Drawable, Destroyable {
+export class Asteroid implements Drawable, Destroyable, Selectable {
   x: number;
   y: number;
+  ghost = false;
+  selected = false;
+  artificial = false;
   mass: number;
   kind: AsteroidKind;
   seed: number;
@@ -101,5 +104,11 @@ export class Asteroid implements Drawable, Destroyable {
       ctx.lineTo(current.x, current.y);
     }
     ctx.fill();
+
+    if (this.selected) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius + 5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
   }
 }

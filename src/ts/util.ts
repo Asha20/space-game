@@ -1,4 +1,5 @@
 import { Network } from "./infrastructure/index";
+import { ghostable } from "./is";
 
 export interface Drawable {
   x: number;
@@ -21,6 +22,7 @@ export interface Tickable extends Ghostable {
 }
 
 export interface Destroyable {
+  artificial: boolean;
   destroy(): void;
 }
 
@@ -28,7 +30,15 @@ export interface Networkable {
   network: Network;
 }
 
+export interface Selectable extends Drawable, Ghostable {
+  selected: boolean;
+}
+
 export interface Vector {
   x: number;
   y: number;
+}
+
+export function distance(obj1: Vector, obj2: Vector) {
+  return Math.hypot(obj1.x - obj2.x, obj1.y - obj2.y);
 }

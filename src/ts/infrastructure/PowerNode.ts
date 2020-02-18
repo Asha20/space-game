@@ -1,13 +1,21 @@
-import { Drawable, Updatable, Networkable, Destroyable } from "../util";
+import {
+  Drawable,
+  Updatable,
+  Networkable,
+  Destroyable,
+  Selectable,
+} from "../util";
 import { Network } from "./network";
 import * as world from "../environment/world";
 
 let RANGE = 150;
 
 export class PowerNode
-  implements Drawable, Updatable, Networkable, Destroyable {
+  implements Drawable, Updatable, Networkable, Destroyable, Selectable {
   x: number;
   y: number;
+  selected = false;
+  artificial = true;
   ghost = false;
   network: Network = new Network(this);
   radius: number = 4;
@@ -46,5 +54,11 @@ export class PowerNode
     const size = this.network.global.size;
     ctx.fillStyle = "white";
     ctx.fillText(`${size}`, this.x, this.y - 20);
+
+    if (this.selected) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius + 5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
   }
 }

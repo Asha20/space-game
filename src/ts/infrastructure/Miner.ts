@@ -1,4 +1,10 @@
-import { Drawable, Tickable, Networkable, Destroyable } from "../util";
+import {
+  Drawable,
+  Tickable,
+  Networkable,
+  Destroyable,
+  Selectable,
+} from "../util";
 import { Asteroid } from "../environment/asteroid";
 import * as world from "../environment/world";
 import { Network } from "./network";
@@ -6,10 +12,13 @@ import { powerNode as isPowerNode } from "../is";
 
 const RANGE = 150;
 
-export class Miner implements Drawable, Tickable, Networkable, Destroyable {
+export class Miner
+  implements Drawable, Tickable, Networkable, Destroyable, Selectable {
   x: number;
   y: number;
+  artificial = true;
   ghost = false;
+  selected = false;
   network: Network = new Network(this, isPowerNode);
   radius: number = 16;
   width: number = this.radius * 2;
@@ -68,5 +77,11 @@ export class Miner implements Drawable, Tickable, Networkable, Destroyable {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fill();
+
+    if (this.selected) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius + 5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
   }
 }
