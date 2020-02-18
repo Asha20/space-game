@@ -20,7 +20,7 @@ export class Network {
   }
 
   static render(ctx: CanvasRenderingContext2D, origin: Vector & Networkable) {
-    ctx.strokeStyle = origin.network.powered ? "white" : "red";
+    ctx.strokeStyle = origin.network.ghostPowered ? "white" : "red";
     for (const target of origin.network.local) {
       ctx.beginPath();
       ctx.moveTo(origin.x, origin.y);
@@ -30,9 +30,45 @@ export class Network {
   }
 
   get powered(): boolean {
-    return [...this.global].some(
-      x => x.constructor.name === "PowerCell" && !x.ghost,
+    return (
+      this.search(
+        x => x.constructor.name === "PowerCell",
+        x => !x.ghost,
+      ) !== null
     );
+  }
+
+  get ghostPowered(): boolean {
+    return this.search(x => x.constructor.name === "PowerCell") !== null;
+  }
+
+  search(
+    validTarget: (x: Infrastructure) => boolean,
+    validPath: (x: Infrastructure) => boolean = () => true,
+    includeSelf: boolean = true,
+  ): Infrastructure | null {
+    const visited = new Set<Infrastructure>();
+    const toVisit = [this.origin];
+
+    while (toVisit.length > 0) {
+      const current = toVisit.pop()!;
+
+      if ((includeSelf || current !== this.origin) && validTarget(current)) {
+        return current;
+      }
+
+      if (visited.has(current)) {
+        continue;
+      }
+      visited.add(current);
+      for (const local of current.network.local) {
+        if (!visited.has(local) && validPath(local)) {
+          toVisit.push(local);
+        }
+      }
+    }
+
+    return null;
   }
 
   recalculate(range: number) {
