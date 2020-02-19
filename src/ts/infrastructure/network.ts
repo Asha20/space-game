@@ -5,7 +5,7 @@ import { distance, Vector, Networkable } from "../util";
 const connectAlways = () => true;
 
 export class Network {
-  materials = world.rgby(0, 0, 0, 0);
+  materials = world.rgby(0);
   global = new Set<Infrastructure>();
   local = new Set<Infrastructure>();
   origin: Infrastructure;

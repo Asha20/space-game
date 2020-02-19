@@ -1,10 +1,18 @@
-import { Drawable, Networkable, Destroyable, Selectable } from "../util";
-import * as world from "../environment/world";
+import {
+  Drawable,
+  Networkable,
+  Destroyable,
+  Selectable,
+  staticImplements,
+  Buildable,
+} from "../util";
+import { rgby } from "../environment/world";
 import { Network } from "./network";
 import { powerNode as isPowerNode } from "../is";
 
 const RANGE = 150;
 
+staticImplements<Buildable, typeof PowerCell>();
 export class PowerCell
   implements Drawable, Networkable, Destroyable, Selectable {
   x: number;
@@ -16,6 +24,10 @@ export class PowerCell
   radius = 32;
   width = this.radius * 2;
   height = this.radius * 2;
+
+  static cost = rgby(20);
+  static description = "Supplies power to the network.";
+  static display = new PowerCell(0, 0);
 
   constructor(x: number, y: number) {
     this.x = x;

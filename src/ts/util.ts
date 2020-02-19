@@ -1,5 +1,5 @@
 import { Network } from "./infrastructure/index";
-import { ghostable } from "./is";
+import { RGBY } from "./environment/world";
 
 export interface Drawable {
   x: number;
@@ -39,6 +39,18 @@ export interface Vector {
   y: number;
 }
 
+export interface Buildable {
+  cost: RGBY;
+  description: string;
+  display: Drawable;
+}
+
+export interface Constructor<T> {
+  new (...args: any[]): T;
+}
+
 export function distance(obj1: Vector, obj2: Vector) {
   return Math.hypot(obj1.x - obj2.x, obj1.y - obj2.y);
 }
+
+export function staticImplements<T, U extends T>() {}

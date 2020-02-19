@@ -46,18 +46,38 @@
     .hud li {
       list-style-type: none;
     }
+
+    .buildables {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .buildables .structure {
+      display: block;
+    }
   </style>
 </head>
 <body>
   <section class="hud">
-    <h2>Materials</h2>
+    <section class="materials">
+      <h2>Materials</h2>
+  
+      <ul>
+        <li>Redonium: <span class="redonium">0</span></li>
+        <li>Greenorium: <span class="greenorium">0</span></li>
+        <li>Blutonium: <span class="blutonium">0</span></li>
+        <li>Yellorium: <span class="yellorium">0</span></li>
+      </ul>
+    </section>
 
-    <ul>
-      <li>Redonium: <span class="redonium">0</span></li>
-      <li>Greenorium: <span class="greenorium">0</span></li>
-      <li>Blutonium: <span class="blutonium">0</span></li>
-      <li>Yellorium: <span class="yellorium">0</span></li>
-    </ul>
+    <h2>Buildables</h2>
+    <section class="buildables"></section>
+
+    <section class="selected">
+      <h3 class="name"></h3>
+      <p class="cost"></p>
+      <p class="description"></p>
+    </section>
   </section>
   <canvas id="app"></canvas>
 </body>

@@ -4,11 +4,15 @@ import {
   Networkable,
   Destroyable,
   Selectable,
+  staticImplements,
+  Buildable,
 } from "../util";
+import { rgby } from "../environment/world";
 import { Network } from "./network";
 
 let RANGE = 150;
 
+staticImplements<Buildable, typeof PowerNode>();
 export class PowerNode
   implements Drawable, Updatable, Networkable, Destroyable, Selectable {
   x: number;
@@ -20,6 +24,10 @@ export class PowerNode
   radius = 4;
   width = this.radius * 2;
   height = this.radius * 2;
+
+  static cost = rgby(2);
+  static description = "Used to form networks to transfer power.";
+  static display = new PowerNode(0, 0);
 
   constructor(x: number, y: number) {
     this.x = x;

@@ -1,27 +1,35 @@
-import { Asteroid, AsteroidType } from "./asteroid";
+import { Asteroid } from "./asteroid";
 import * as random from "../random";
 import * as is from "../is";
 import { Drawable } from "../util";
-import { Network } from "../infrastructure/index";
+import { Network, Infrastructure } from "../infrastructure/index";
+import { InfrastructureConstructor } from "../infrastructure/common";
 
 interface Collection<T extends object> {
   set: Set<T>;
   test: (x: object) => x is T;
 }
 
-export interface RGBY<T> {
+export interface RGBY<T = number> {
   redonium: T;
   greenorium: T;
   blutonium: T;
   yellorium: T;
 }
 
+export function rgby<T>(amount: T): RGBY<T>;
 export function rgby<T>(
   redonium: T,
   greenorium: T,
   blutonium: T,
   yellorium: T,
-): RGBY<T> {
+): RGBY<T>;
+export function rgby<T>(...args: T[]): RGBY<T> {
+  if (args.length === 1) {
+    const val = args[0];
+    return { redonium: val, greenorium: val, blutonium: val, yellorium: val };
+  }
+  const [redonium, greenorium, blutonium, yellorium] = args;
   return { redonium, greenorium, blutonium, yellorium };
 }
 
@@ -168,13 +176,25 @@ export const updatables = collection(is.updatable);
 export const tickables = collection(is.tickable);
 export const selectables = collection(is.selectable);
 
-export const materials: Record<AsteroidType, number> = {
-  redonium: 0,
-  greenorium: 0,
-  blutonium: 0,
-  yellorium: 0,
-};
+export const materials = rgby(0);
 
 for (const asteroid of generateAsteroids(30)) {
   register(asteroid);
+}
+
+export let Ghost: InfrastructureConstructor | null = null;
+export let ghost: Infrastructure | null = null;
+
+export function setGhost(NewGhost: InfrastructureConstructor | null) {
+  if (Ghost === NewGhost) {
+    return;
+  }
+
+  ghost?.destroy();
+  if (NewGhost) {
+    Ghost = NewGhost;
+    ghost = Ghost && new Ghost(0, 0);
+    ghost.ghost = true;
+    register(ghost);
+  }
 }

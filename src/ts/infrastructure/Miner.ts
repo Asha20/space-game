@@ -4,6 +4,8 @@ import {
   Networkable,
   Destroyable,
   Selectable,
+  Buildable,
+  staticImplements,
 } from "../util";
 import { Asteroid } from "../environment/asteroid";
 import * as world from "../environment/world";
@@ -12,6 +14,7 @@ import { powerNode as isPowerNode } from "../is";
 
 const RANGE = 150;
 
+staticImplements<Buildable, typeof Miner>();
 export class Miner
   implements Drawable, Tickable, Networkable, Destroyable, Selectable {
   x: number;
@@ -24,6 +27,10 @@ export class Miner
   width = this.radius * 2;
   height = this.radius * 2;
   targets: Asteroid[] = [];
+
+  static cost = world.rgby(10);
+  static description = "Mines nearby asteroids.";
+  static display = new Miner(0, 0);
 
   constructor(x: number, y: number) {
     this.x = x;
