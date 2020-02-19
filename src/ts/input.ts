@@ -48,17 +48,21 @@ export class Mouse {
   y: number = 0;
   isDown: boolean = false;
   isPressed: boolean = false;
+  el: HTMLElement;
+  rect: DOMRect;
   recalculate: () => void;
   mousedownHandler: (e: MouseEvent) => void;
   mouseupHandler: (e: MouseEvent) => void;
   mousemoveHandler: (e: MouseEvent) => void;
 
   constructor(el: HTMLElement, recalculate?: (pos: Vector) => Vector) {
-    const rect = el.getBoundingClientRect();
+    this.el = el;
+    this.rect = el.getBoundingClientRect();
 
     this.mousedownHandler = () => {
-      this.isDown = true;
-      this.isPressed = true;
+      const inBounds = this.inBounds();
+      this.isDown = inBounds;
+      this.isPressed = inBounds;
     };
 
     this.mouseupHandler = () => {
@@ -67,9 +71,13 @@ export class Mouse {
     };
 
     this.mousemoveHandler = (e: MouseEvent) => {
-      this.absX = e.clientX - rect.left;
-      this.absY = e.clientY - rect.top;
-      this.recalculate();
+      this.absX = e.clientX - this.rect.left;
+      this.absY = e.clientY - this.rect.top;
+
+      if (this.inBounds()) {
+        this.recalculate();
+        return;
+      }
     };
 
     this.recalculate = () => {
@@ -83,6 +91,14 @@ export class Mouse {
     window.addEventListener("mousedown", this.mousedownHandler);
     window.addEventListener("mouseup", this.mouseupHandler);
     window.addEventListener("mousemove", this.mousemoveHandler);
+  }
+
+  inBounds() {
+    const x = this.absX;
+    const y = this.absY;
+    const width = this.rect.right - this.rect.left;
+    const height = this.rect.bottom - this.rect.top;
+    return x >= 0 && x <= width && y >= 0 && y <= height;
   }
 
   down() {
