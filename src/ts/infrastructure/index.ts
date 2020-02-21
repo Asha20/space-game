@@ -1,11 +1,15 @@
 import { Miner } from "./Miner";
 import { PowerNode } from "./PowerNode";
 import { PowerCell } from "./PowerCell";
-import { Infrastructure } from "./common";
-import { Constructor, Buildable } from "../util";
+import { Infrastructure } from "./Infrastructure";
+import { Buildable } from "../util";
 export { Network } from "./network";
 
-export const infrastructures: Array<Constructor<Infrastructure> & Buildable> = [
+export interface InfrastructureConstructor {
+  new (x: number, y: number): Infrastructure;
+}
+
+export const infrastructures: Array<InfrastructureConstructor & Buildable> = [
   Miner,
   PowerNode,
   PowerCell,

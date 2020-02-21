@@ -1,4 +1,4 @@
-import { Infrastructure } from "./common";
+import { Infrastructure } from "./Infrastructure";
 import * as world from "../environment/world";
 import { distance, Vector, Networkable } from "../util";
 

@@ -1,27 +1,14 @@
-import {
-  Drawable,
-  Tickable,
-  Networkable,
-  Destroyable,
-  Selectable,
-  Buildable,
-  staticImplements,
-} from "../util";
+import { Tickable, Buildable, staticImplements, distance } from "../util";
+import { powerNode as isPowerNode } from "../is";
+import { Infrastructure } from "./Infrastructure";
 import { Asteroid } from "../environment/asteroid";
 import * as world from "../environment/world";
 import { Network } from "./network";
-import { powerNode as isPowerNode } from "../is";
 
 const RANGE = 150;
 
 staticImplements<Buildable, typeof Miner>();
-export class Miner
-  implements Drawable, Tickable, Networkable, Destroyable, Selectable {
-  x: number;
-  y: number;
-  artificial = true;
-  ghost = false;
-  selected = false;
+export class Miner extends Infrastructure implements Tickable {
   network: Network = new Network(this, isPowerNode);
   radius = 16;
   width = this.radius * 2;
@@ -33,8 +20,7 @@ export class Miner
   static display = new Miner(0, 0);
 
   constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+    super(x, y);
   }
 
   tick() {
@@ -53,18 +39,18 @@ export class Miner
   }
 
   recalculateTargets() {
-    this.targets = [...world.asteroids].filter(as => {
-      return Math.hypot(as.x - this.x, as.y - this.y) <= RANGE;
-    });
+    this.targets = [...world.asteroids].filter(
+      as => distance(this, as) <= RANGE,
+    );
   }
 
   update() {
+    super.update();
     this.recalculateTargets();
   }
 
-  destroy() {}
-
   draw(ctx: CanvasRenderingContext2D) {
+    super.draw(ctx);
     ctx.strokeStyle = "white";
     for (const target of this.targets) {
       ctx.beginPath();

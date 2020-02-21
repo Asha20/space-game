@@ -2,8 +2,10 @@ import { Asteroid } from "./asteroid";
 import * as random from "../random";
 import * as is from "../is";
 import { Drawable } from "../util";
-import { Network, Infrastructure } from "../infrastructure/index";
-import { InfrastructureConstructor } from "../infrastructure/common";
+import {
+  Infrastructure,
+  InfrastructureConstructor,
+} from "../infrastructure/index";
 
 interface Collection<T extends object> {
   set: Set<T>;
@@ -63,44 +65,6 @@ export function register(obj: object) {
     if (test(obj)) {
       set.add(obj);
     }
-  }
-
-  if (is.updatable(obj) && is.networkable(obj)) {
-    const oldUpdate = obj.update;
-    obj.update = function newUpdate() {
-      oldUpdate.call(this);
-      this.network.recalculate(150);
-    };
-  }
-
-  if (is.destroyable(obj)) {
-    const oldDestroy = obj.destroy;
-    obj.destroy = function newDestroy() {
-      destroy(this);
-      oldDestroy.call(this);
-
-      if (is.networkable(this)) {
-        this.network.recalculate(0);
-      }
-    };
-  }
-
-  if (is.drawable(obj)) {
-    const oldDraw = obj.draw;
-    obj.draw = function newDraw(ctx) {
-      oldDraw.call(this, ctx);
-
-      if (is.networkable(this)) {
-        ctx.strokeStyle = "white";
-        Network.render(ctx, this);
-      }
-      if (is.selectable(obj) && obj.selected) {
-        ctx.strokeStyle = "lime";
-        ctx.beginPath();
-        ctx.arc(obj.x, obj.y, obj.width / 2 + 5, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-    };
   }
 
   if (is.updatable(obj)) {

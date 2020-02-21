@@ -1,25 +1,10 @@
-import {
-  Drawable,
-  Updatable,
-  Networkable,
-  Destroyable,
-  Selectable,
-  staticImplements,
-  Buildable,
-} from "../util";
+import { staticImplements, Buildable } from "../util";
 import { rgby } from "../environment/world";
+import { Infrastructure } from "./Infrastructure";
 import { Network } from "./network";
 
-let RANGE = 150;
-
 staticImplements<Buildable, typeof PowerNode>();
-export class PowerNode
-  implements Drawable, Updatable, Networkable, Destroyable, Selectable {
-  x: number;
-  y: number;
-  selected = false;
-  artificial = true;
-  ghost = false;
+export class PowerNode extends Infrastructure {
   network: Network = new Network(this);
   radius = 4;
   width = this.radius * 2;
@@ -29,16 +14,8 @@ export class PowerNode
   static description = "Used to form networks to transfer power.";
   static display = new PowerNode(0, 0);
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-
-  update() {}
-
-  destroy() {}
-
   draw(ctx: CanvasRenderingContext2D) {
+    super.draw(ctx);
     ctx.fillStyle = ctx.strokeStyle = this.network.ghostPowered
       ? "white"
       : "red";
