@@ -82,7 +82,7 @@ export function destroy(x: object) {
 
 export function update() {
   for (const updatable of updatables) {
-    if (updatable.ghost) {
+    if (updatable.ghost || is.enemy(updatable) || is.projectile(updatable)) {
       updatable.update();
     }
   }

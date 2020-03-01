@@ -3,6 +3,7 @@ import { Camera } from "./camera";
 import * as world from "./environment/world";
 import * as hud from "./hud";
 import { ghost, Ghost } from "./environment/world";
+import { Ship } from "./enemy/index";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 if (!canvas) {
@@ -39,6 +40,9 @@ const camera = new Camera(ctx, ({ up, down, left, right, zoomIn, zoomOut }) => {
 });
 
 const cameraMouse = camera.mouse;
+
+const ship = new Ship(0, 0);
+world.register(ship);
 
 function draw() {
   if (ghost) {

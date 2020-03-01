@@ -15,6 +15,8 @@ import {
   Networkable,
   Vector,
 } from "./util";
+import { Enemy } from "./enemy/index";
+import { Projectile } from "./projectile/Projectile";
 
 export function miner(x: object): x is Miner {
   return x.constructor.name === "Miner";
@@ -73,4 +75,12 @@ export function vector(obj: object): obj is Vector {
   return (
     typeof (obj as any).x === "number" && typeof (obj as any).y === "number"
   );
+}
+
+export function enemy(obj: object): obj is Enemy {
+  return obj instanceof Enemy;
+}
+
+export function projectile(obj: object): obj is Projectile {
+  return obj instanceof Projectile;
 }
