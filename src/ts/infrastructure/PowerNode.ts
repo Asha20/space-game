@@ -9,6 +9,8 @@ export class PowerNode extends Infrastructure {
   radius = 4;
   width = this.radius * 2;
   height = this.radius * 2;
+  maxHealth = 20;
+  health = this.maxHealth;
 
   static cost = rgby(2);
   static description = "Used to form networks to transfer power.";

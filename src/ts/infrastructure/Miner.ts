@@ -14,6 +14,8 @@ export class Miner extends Infrastructure implements Tickable {
   width = this.radius * 2;
   height = this.radius * 2;
   targets: Asteroid[] = [];
+  maxHealth = 100;
+  health = this.maxHealth;
 
   static cost = world.rgby(10);
   static description = "Mines nearby asteroids.";

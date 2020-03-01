@@ -45,6 +45,11 @@ export interface Buildable {
   display: Drawable;
 }
 
+export interface Damageable {
+  health: number;
+  maxHealth: number;
+}
+
 export interface Constructor<T> {
   new (...args: any[]): T;
 }

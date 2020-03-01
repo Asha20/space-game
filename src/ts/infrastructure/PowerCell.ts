@@ -10,6 +10,8 @@ export class PowerCell extends Infrastructure {
   radius = 32;
   width = this.radius * 2;
   height = this.radius * 2;
+  maxHealth = 200;
+  health = this.maxHealth;
 
   static cost = rgby(20);
   static description = "Supplies power to the network.";

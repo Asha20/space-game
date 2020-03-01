@@ -31,7 +31,7 @@ export class Ship extends Enemy {
   }
 
   shoot(target: Infrastructure) {
-    const bullet = new this.BulletType(this.x, this.y, target);
+    const bullet = new this.BulletType(this.x, this.y, this, target);
     world.register(bullet);
   }
 

@@ -6,9 +6,9 @@ export class RedBullet extends Projectile {
   width = this.radius * 2;
   height = this.radius * 2;
   speed = 4;
+  damage = 5;
 
   onCollision(target: Infrastructure) {
-    console.log(1);
     this.destroy();
   }
 

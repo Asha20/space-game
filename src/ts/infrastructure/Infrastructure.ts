@@ -1,16 +1,24 @@
-import { Drawable, Networkable, Destroyable, Selectable } from "../util";
+import {
+  Drawable,
+  Networkable,
+  Destroyable,
+  Selectable,
+  Damageable,
+} from "../util";
 import { Network } from "./network";
 import * as world from "../environment/world";
 
 const RANGE = 150;
 
 export abstract class Infrastructure
-  implements Drawable, Networkable, Destroyable, Selectable {
+  implements Drawable, Networkable, Destroyable, Selectable, Damageable {
   x: number;
   y: number;
   artificial = true;
   ghost = false;
   selected = false;
+  abstract health: number;
+  abstract maxHealth: number;
   abstract network: Network;
   abstract radius: number;
   abstract width: number;
