@@ -16,6 +16,16 @@ type Context = CanvasRenderingContext2D;
 
 const SPEED = 4;
 
+/** Objects near the beginning of the array have a higher z-index. */
+const RENDER_ORDER: Array<(x: object) => boolean> = [
+  x => is.ghostable(x) && x.ghost,
+  is.enemy,
+  is.projectile,
+  is.infrastructure,
+  is.asteroid,
+  () => true,
+];
+
 export class Camera {
   x = 0;
   y = 0;
@@ -87,7 +97,13 @@ export class Camera {
     this.ctx.scale(this.zoom, this.zoom);
     this.ctx.translate(this.width / 2 - this.x, this.height / 2 - this.y);
 
-    for (const drawable of drawables) {
+    const ordered = [...drawables].sort(
+      (a, b) =>
+        RENDER_ORDER.findIndex(fn => fn(b)) -
+        RENDER_ORDER.findIndex(fn => fn(a)),
+    );
+
+    for (const drawable of ordered) {
       if (!this.inBounds(drawable)) {
         continue;
       }
