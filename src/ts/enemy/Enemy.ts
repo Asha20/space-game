@@ -1,6 +1,6 @@
-import { angle, Shape } from "../util/util";
-import { Drawable, Updatable, Tickable } from "../util/traits";
-import { Infrastructure } from "../infrastructure";
+import { angle, Shape } from "@/util/util";
+import { Drawable, Updatable, Tickable } from "@/util/traits";
+import { Infrastructure } from "@/infrastructure";
 
 export abstract class Enemy implements Drawable, Updatable, Tickable {
   x: number;

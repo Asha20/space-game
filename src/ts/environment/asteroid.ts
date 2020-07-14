@@ -1,6 +1,6 @@
-import { Drawable, Destroyable, Selectable } from "../util/traits";
-import { Vector } from "../util/util";
-import * as random from "../util/random";
+import { Drawable, Destroyable, Selectable } from "@/util/traits";
+import { Vector } from "@/util/util";
+import * as random from "@/util/random";
 import * as world from "./world";
 
 export enum AsteroidType {

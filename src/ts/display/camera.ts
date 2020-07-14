@@ -1,4 +1,4 @@
-import { Drawable } from "../util/traits";
+import { Drawable } from "@/util/traits";
 import { Mouse } from "./input";
 
 interface Controls {

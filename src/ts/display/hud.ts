@@ -1,5 +1,5 @@
-import { materials, setGhost } from "../environment/world";
-import { infrastructures, InfrastructureConstructor } from "../infrastructure";
+import { materials, setGhost } from "@/environment/world";
+import { infrastructures, InfrastructureConstructor } from "@/infrastructure";
 
 const hud = document.querySelector(".hud")!;
 const qs = (selector: string) => hud.querySelector(selector)!;

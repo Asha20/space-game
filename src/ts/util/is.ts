@@ -1,5 +1,5 @@
-import { Miner, PowerNode, PowerCell, Infrastructure } from "../infrastructure";
-import { Asteroid } from "../environment/asteroid";
+import { Miner, PowerNode, PowerCell, Infrastructure } from "@/infrastructure";
+import { Asteroid } from "@/environment/asteroid";
 import {
   Drawable,
   Tickable,
@@ -9,8 +9,8 @@ import {
   Destroyable,
   Networkable,
 } from "./traits";
-import { Enemy } from "../enemy";
-import { Projectile } from "../projectile/Projectile";
+import { Enemy } from "@/enemy";
+import { Projectile } from "@/projectile/Projectile";
 
 export function miner(x: object): x is Miner {
   return x.constructor.name === "Miner";

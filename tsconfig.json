@@ -6,7 +6,11 @@
     "strict": true,
     "sourceMap": true,
     "downlevelIteration": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": "src/ts",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": [
     "src/"

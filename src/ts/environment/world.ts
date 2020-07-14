@@ -1,8 +1,8 @@
 import { Asteroid } from "./asteroid";
-import * as random from "../util/random";
-import * as is from "../util/is";
-import { Drawable } from "../util/traits";
-import { Infrastructure, InfrastructureConstructor } from "../infrastructure";
+import * as random from "@/util/random";
+import * as is from "@/util/is";
+import { Drawable } from "@/util/traits";
+import { Infrastructure, InfrastructureConstructor } from "@/infrastructure";
 
 interface Collection<T extends object> {
   set: Set<T>;

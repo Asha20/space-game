@@ -1,4 +1,4 @@
-import { Shape, Health } from "../util/util";
+import { Shape, Health } from "@/util/util";
 import {
   Drawable,
   Networkable,
@@ -7,9 +7,9 @@ import {
   Damageable,
   Buildable,
   Static,
-} from "../util/traits";
+} from "@/util/traits";
 import * as Network from "./network";
-import * as world from "../environment/world";
+import * as world from "@/environment/world";
 
 const RANGE = 150;
 
