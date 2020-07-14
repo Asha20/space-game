@@ -1,5 +1,6 @@
 devDependencies:
   awesome-typescript-loader: 5.2.1_typescript@3.9.6
+  circular-dependency-plugin: 5.2.0_webpack@4.43.0
   cross-env: 7.0.2
   html-webpack-plugin: 3.2.0_webpack@4.43.0
   rimraf: 3.0.2
@@ -698,6 +699,16 @@ packages:
     dev: true
     resolution:
       integrity: sha512-Kkht5ye6ZGmwv40uUDZztayT2ThLQGfnj/T71N/XzeZeo3nf8foyW7zGTsPYkEya3m5f3cAypH+qe7YOrM1U2Q==
+  /circular-dependency-plugin/5.2.0_webpack@4.43.0:
+    dependencies:
+      webpack: 4.43.0_webpack@4.43.0
+    dev: true
+    engines:
+      node: '>=6.0.0'
+    peerDependencies:
+      webpack: '>=4.0.1'
+    resolution:
+      integrity: sha512-7p4Kn/gffhQaavNfyDFg7LS5S/UT1JAjyGd4UqR2+jzoYF02eDkj0Ec3+48TsIa4zghjLY87nQHIh/ecK9qLdw==
   /class-utils/0.3.6:
     dependencies:
       arr-union: 3.1.0
@@ -4326,6 +4337,7 @@ packages:
       integrity: sha512-AX3Zw5iPruN5ie6xGRIDgqkT+ZhnRlZMLMHAs8tg7nRruy2Nb+i5o9bwghAogtM08q1dpr2LVoS8KSTMYpWXUw==
 specifiers:
   awesome-typescript-loader: ^5.2.1
+  circular-dependency-plugin: ^5.2.0
   cross-env: ^7.0.2
   html-webpack-plugin: ^3.2.0
   rimraf: ^3.0.2

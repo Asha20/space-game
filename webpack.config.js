@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CircularDependencyPlugin = require("circular-dependency-plugin");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -43,6 +44,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "src/templates/index.html",
       minify: isProduction && htmlMinifyOptions,
+    }),
+    new CircularDependencyPlugin({
+      exclude: /node_modules/,
+      include: /src\/ts/,
+      failOnError: true,
+      allowAsyncCycles: false,
+      cwd: process.cwd(),
     }),
   ],
 };
