@@ -1,4 +1,4 @@
-import { distance, Networkable, Vector } from "@/util";
+import { distance, angle } from "@/util";
 import { collections } from "@/environment";
 import { Infrastructure } from "./Infrastructure";
 
@@ -114,15 +114,20 @@ export function create(
   return new Network(origin, canConnect);
 }
 
-export function render(
-  ctx: CanvasRenderingContext2D,
-  origin: Vector & Networkable,
-) {
+export function render(ctx: CanvasRenderingContext2D, origin: Infrastructure) {
   ctx.strokeStyle = origin.network.ghostPowered ? "white" : "red";
   for (const target of origin.network.local) {
+    const a = angle(origin, target);
+
     ctx.beginPath();
-    ctx.moveTo(origin.x, origin.y);
-    ctx.lineTo(target.x, target.y);
+    ctx.moveTo(
+      origin.x + origin.shape.radius * Math.cos(a),
+      origin.y + origin.shape.radius * Math.sin(a),
+    );
+    ctx.lineTo(
+      target.x + target.shape.radius * Math.cos(a + Math.PI),
+      target.y + target.shape.radius * Math.sin(a + Math.PI),
+    );
     ctx.stroke();
   }
 }
