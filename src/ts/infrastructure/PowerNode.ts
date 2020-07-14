@@ -1,4 +1,4 @@
-import { shape, health } from "../util";
+import { shape, health } from "../util/util";
 import { rgby } from "../environment/world";
 import { Infrastructure } from "./Infrastructure";
 import * as Network from "./network";

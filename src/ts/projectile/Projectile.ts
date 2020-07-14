@@ -1,8 +1,8 @@
-import { Infrastructure } from "../infrastructure/index";
-import { angle, distance, Shape } from "../util";
-import { Updatable, Drawable, Destroyable } from "../traits";
+import { Infrastructure } from "../infrastructure";
+import { angle, distance, Shape } from "../util/util";
+import { Updatable, Drawable, Destroyable } from "../util/traits";
 import * as world from "../environment/world";
-import { Enemy } from "../enemy/index";
+import { Enemy } from "../enemy";
 
 export abstract class Projectile implements Updatable, Drawable, Destroyable {
   x: number;

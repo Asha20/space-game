@@ -1,4 +1,4 @@
-import { Vector } from "./util";
+import { Vector } from "../util/util";
 
 export class Keyboard {
   downMap: Map<string, boolean> = new Map();

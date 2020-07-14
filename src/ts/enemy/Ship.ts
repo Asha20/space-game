@@ -1,8 +1,8 @@
 import { Enemy } from "./Enemy";
 import * as world from "../environment/world";
-import { distance, compare, shape } from "../util";
-import { Infrastructure } from "../infrastructure/index";
-import { RedBullet } from "../projectile/index";
+import { distance, compare, shape } from "../util/util";
+import { Infrastructure } from "../infrastructure";
+import { RedBullet } from "../projectile";
 
 export class Ship extends Enemy {
   speed = 4;

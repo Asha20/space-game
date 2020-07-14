@@ -5,7 +5,8 @@
     "lib": ["dom", "es2019"],
     "strict": true,
     "sourceMap": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "moduleResolution": "node"
   },
   "include": [
     "src/"

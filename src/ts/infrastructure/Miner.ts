@@ -1,6 +1,6 @@
-import { distance, shape, health } from "../util";
-import { Tickable } from "../traits";
-import { powerNode as isPowerNode } from "../is";
+import { distance, shape, health } from "../util/util";
+import { Tickable } from "../util/traits";
+import { powerNode as isPowerNode } from "../util/is";
 import { Infrastructure } from "./Infrastructure";
 import { Asteroid } from "../environment/asteroid";
 import * as world from "../environment/world";

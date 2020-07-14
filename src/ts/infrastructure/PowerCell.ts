@@ -1,7 +1,7 @@
-import { shape, health } from "../util";
+import { shape, health } from "../util/util";
 import { rgby } from "../environment/world";
 import { Infrastructure } from "./Infrastructure";
-import { powerNode as isPowerNode } from "../is";
+import { powerNode as isPowerNode } from "../util/is";
 import * as Network from "./network";
 
 const STATIC = Object.freeze({

@@ -1,9 +1,7 @@
-import { Keyboard } from "./input";
-import { Camera } from "./camera";
+import { Keyboard, Camera, renderHUD } from "./display";
 import * as world from "./environment/world";
-import * as hud from "./hud";
 import { ghost, Ghost } from "./environment/world";
-import { Ship } from "./enemy/index";
+import { Ship } from "./enemy";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 if (!canvas) {
@@ -51,7 +49,7 @@ function draw() {
   }
   world.update();
   camera.render(world.drawables);
-  hud.render();
+  renderHUD();
 
   if (cameraMouse.pressed()) {
     world.select(cameraMouse.x, cameraMouse.y);
