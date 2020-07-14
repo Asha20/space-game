@@ -1,29 +1,23 @@
-import { Tickable, Buildable, staticImplements, distance } from "../util";
+import { Tickable, distance, shape, health } from "../util";
 import { powerNode as isPowerNode } from "../is";
 import { Infrastructure } from "./Infrastructure";
 import { Asteroid } from "../environment/asteroid";
 import * as world from "../environment/world";
-import { Network } from "./network";
+import * as Network from "./network";
 
 const RANGE = 150;
 
-staticImplements<Buildable, typeof Miner>();
+const STATIC = Object.freeze({
+  cost: world.rgby(10),
+  description: "Mines nearby asteroids.",
+});
+
 export class Miner extends Infrastructure implements Tickable {
-  network: Network = new Network(this, isPowerNode);
-  radius = 16;
-  width = this.radius * 2;
-  height = this.radius * 2;
+  static = STATIC;
+  network = Network.create(this, isPowerNode);
+  shape = shape.circle(16);
+  health = health(100);
   targets: Asteroid[] = [];
-  maxHealth = 100;
-  health = this.maxHealth;
-
-  static cost = world.rgby(10);
-  static description = "Mines nearby asteroids.";
-  static display = new Miner(0, 0);
-
-  constructor(x: number, y: number) {
-    super(x, y);
-  }
 
   tick() {
     if (!this.network.powered) {
@@ -63,7 +57,7 @@ export class Miner extends Infrastructure implements Tickable {
 
     ctx.fillStyle = "purple";
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.shape.radius, 0, Math.PI * 2);
     ctx.fill();
   }
 }

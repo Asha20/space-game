@@ -1,11 +1,31 @@
 import { Network } from "./infrastructure/index";
 import { RGBY } from "./environment/world";
 
+export interface Shape {
+  radius: number;
+  width: number;
+  height: number;
+}
+
+export interface Health {
+  max: number;
+  current: number;
+}
+
+export const shape = {
+  circle(radius: number): Shape {
+    return { radius, width: 2 * radius, height: 2 * radius };
+  },
+};
+
+export function health(max: number): Health {
+  return { max, current: max };
+}
+
 export interface Drawable {
   x: number;
   y: number;
-  width: number;
-  height: number;
+  shape: Shape;
   draw(ctx: CanvasRenderingContext2D): void;
 }
 
@@ -27,7 +47,7 @@ export interface Destroyable {
 }
 
 export interface Networkable {
-  network: Network;
+  network: Network.Network;
 }
 
 export interface Selectable extends Drawable, Ghostable {
@@ -42,16 +62,14 @@ export interface Vector {
 export interface Buildable {
   cost: RGBY;
   description: string;
-  display: Drawable;
 }
 
 export interface Damageable {
-  health: number;
-  maxHealth: number;
+  health: Health;
 }
 
-export interface Constructor<T> {
-  new (...args: any[]): T;
+export interface Static<T> {
+  static: T;
 }
 
 export function distance(obj1: Vector, obj2: Vector) {
@@ -67,5 +85,3 @@ export function compare<T>(transform: (x: T) => number, reverse = false) {
 export function angle(origin: Vector, target: Vector) {
   return Math.atan2(target.y - origin.y, target.x - origin.x);
 }
-
-export function staticImplements<T, U extends T>() {}

@@ -4,7 +4,9 @@ import { distance, Vector, Networkable } from "../util";
 
 const connectAlways = () => true;
 
-export class Network {
+export type { Network };
+
+class Network {
   materials = world.rgby(0);
   global = new Set<Infrastructure>();
   local = new Set<Infrastructure>();
@@ -17,16 +19,6 @@ export class Network {
   ) {
     this.origin = origin;
     this.canConnect = canConnect;
-  }
-
-  static render(ctx: CanvasRenderingContext2D, origin: Vector & Networkable) {
-    ctx.strokeStyle = origin.network.ghostPowered ? "white" : "red";
-    for (const target of origin.network.local) {
-      ctx.beginPath();
-      ctx.moveTo(origin.x, origin.y);
-      ctx.lineTo(target.x, target.y);
-      ctx.stroke();
-    }
   }
 
   get powered(): boolean {
@@ -114,5 +106,25 @@ export class Network {
     };
 
     this.global = _reform(this.origin, new Set());
+  }
+}
+
+export function create(
+  origin: Infrastructure,
+  canConnect: (other: Infrastructure) => boolean = connectAlways,
+): Network {
+  return new Network(origin, canConnect);
+}
+
+export function render(
+  ctx: CanvasRenderingContext2D,
+  origin: Vector & Networkable,
+) {
+  ctx.strokeStyle = origin.network.ghostPowered ? "white" : "red";
+  for (const target of origin.network.local) {
+    ctx.beginPath();
+    ctx.moveTo(origin.x, origin.y);
+    ctx.lineTo(target.x, target.y);
+    ctx.stroke();
   }
 }

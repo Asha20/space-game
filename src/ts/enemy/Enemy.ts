@@ -1,4 +1,4 @@
-import { Drawable, Updatable, Tickable, angle } from "../util";
+import { Drawable, Updatable, Tickable, angle, Shape } from "../util";
 import { Infrastructure } from "../infrastructure/index";
 
 export abstract class Enemy implements Drawable, Updatable, Tickable {
@@ -8,9 +8,7 @@ export abstract class Enemy implements Drawable, Updatable, Tickable {
   ghost = false;
   target: Infrastructure | undefined = undefined;
   abstract speed: number;
-  abstract radius: number;
-  abstract width: number;
-  abstract height: number;
+  abstract shape: Shape;
 
   constructor(x: number, y: number) {
     this.x = x;

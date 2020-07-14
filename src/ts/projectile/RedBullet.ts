@@ -1,10 +1,9 @@
 import { Projectile } from "./Projectile";
 import { Infrastructure } from "../infrastructure/index";
+import { shape } from "../util";
 
 export class RedBullet extends Projectile {
-  radius = 2;
-  width = this.radius * 2;
-  height = this.radius * 2;
+  shape = shape.circle(2);
   speed = 4;
   damage = 5;
 
@@ -15,7 +14,7 @@ export class RedBullet extends Projectile {
   draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = "red";
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.shape.radius, 0, Math.PI * 2);
     ctx.fill();
   }
 }

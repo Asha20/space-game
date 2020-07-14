@@ -55,16 +55,12 @@ export class Asteroid implements Drawable, Destroyable, Selectable {
     this.kind = random.choose(kinds);
   }
 
-  get radius() {
-    return this.mass;
-  }
-
-  get width() {
-    return this.radius * 2;
-  }
-
-  get height() {
-    return this.radius * 2;
+  get shape() {
+    return {
+      radius: this.mass,
+      width: this.mass * 2,
+      height: this.mass * 2,
+    };
   }
 
   static shouldSpawn() {
@@ -89,8 +85,12 @@ export class Asteroid implements Drawable, Destroyable, Selectable {
     const points: Vector[] = [];
     for (let i = 0; i < vertices; i++) {
       const point: Vector = {
-        x: this.x + Math.cos(angle) * random.rangeFloat(0.6, 1) * this.radius,
-        y: this.y + Math.sin(angle) * random.rangeFloat(0.6, 1) * this.radius,
+        x:
+          this.x +
+          Math.cos(angle) * random.rangeFloat(0.6, 1) * this.shape.radius,
+        y:
+          this.y +
+          Math.sin(angle) * random.rangeFloat(0.6, 1) * this.shape.radius,
       };
       angle += radians(360 / vertices);
       points.push(point);
@@ -107,7 +107,7 @@ export class Asteroid implements Drawable, Destroyable, Selectable {
 
     if (this.selected) {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius + 5, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, this.shape.radius + 5, 0, Math.PI * 2);
       ctx.stroke();
     }
   }

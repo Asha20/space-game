@@ -89,8 +89,8 @@ export function update() {
 }
 
 function isInside(obj: Drawable, x: number, y: number) {
-  const halfWidth = obj.width / 2;
-  const halfHeight = obj.height / 2;
+  const halfWidth = obj.shape.width / 2;
+  const halfHeight = obj.shape.height / 2;
   return (
     x >= obj.x - halfWidth &&
     x <= obj.x + halfWidth &&

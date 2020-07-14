@@ -1,5 +1,12 @@
 import { Infrastructure } from "../infrastructure/index";
-import { Updatable, Drawable, angle, distance, Destroyable } from "../util";
+import {
+  Updatable,
+  Drawable,
+  angle,
+  distance,
+  Destroyable,
+  Shape,
+} from "../util";
 import * as world from "../environment/world";
 import { Enemy } from "../enemy/index";
 
@@ -13,8 +20,7 @@ export abstract class Projectile implements Updatable, Drawable, Destroyable {
   artificial = false;
   abstract speed: number;
   abstract damage: number;
-  abstract width: number;
-  abstract height: number;
+  abstract shape: Shape;
 
   constructor(x: number, y: number, shooter: Enemy, target: Infrastructure) {
     this.x = x;
@@ -31,10 +37,10 @@ export abstract class Projectile implements Updatable, Drawable, Destroyable {
     this.x += this.speed * Math.cos(this.rotation);
     this.y += this.speed * Math.sin(this.rotation);
 
-    if (distance(this, this.target) <= this.target.radius) {
+    if (distance(this, this.target) <= this.target.shape.radius) {
       this.onCollision(this.target);
-      this.target.health -= this.damage;
-      if (this.target.health <= 0) {
+      this.target.health.current -= this.damage;
+      if (this.target.health.current <= 0) {
         this.target.destroy();
         this.shooter.target = this.shooter.getTarget();
       }

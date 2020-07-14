@@ -56,11 +56,12 @@ export class Camera {
   }
 
   inBounds(obj: Drawable) {
+    const { width, height } = obj.shape;
     return (
-      obj.x + obj.width / 2 >= this.x - this.width / 2 &&
-      obj.x - obj.width / 2 <= this.x + this.width / 2 &&
-      obj.y + obj.height / 2 >= this.y - this.height / 2 &&
-      obj.y - obj.height / 2 <= this.y + this.height / 2
+      obj.x + width / 2 >= this.x - this.width / 2 &&
+      obj.x - width / 2 <= this.x + this.width / 2 &&
+      obj.y + height / 2 >= this.y - this.height / 2 &&
+      obj.y - height / 2 <= this.y + this.height / 2
     );
   }
 

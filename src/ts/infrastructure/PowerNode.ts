@@ -1,20 +1,18 @@
-import { staticImplements, Buildable } from "../util";
+import { shape, health } from "../util";
 import { rgby } from "../environment/world";
 import { Infrastructure } from "./Infrastructure";
-import { Network } from "./network";
+import * as Network from "./network";
 
-staticImplements<Buildable, typeof PowerNode>();
+const STATIC = Object.freeze({
+  cost: rgby(2),
+  description: "Used to form networks to transfer power.",
+});
+
 export class PowerNode extends Infrastructure {
-  network: Network = new Network(this);
-  radius = 4;
-  width = this.radius * 2;
-  height = this.radius * 2;
-  maxHealth = 20;
-  health = this.maxHealth;
-
-  static cost = rgby(2);
-  static description = "Used to form networks to transfer power.";
-  static display = new PowerNode(0, 0);
+  static = STATIC;
+  network = Network.create(this);
+  shape = shape.circle(4);
+  health = health(20);
 
   draw(ctx: CanvasRenderingContext2D) {
     super.draw(ctx);
@@ -22,7 +20,7 @@ export class PowerNode extends Infrastructure {
       ? "white"
       : "red";
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.shape.radius, 0, Math.PI * 2);
     if (this.network.ghostPowered) {
       ctx.fill();
     } else {

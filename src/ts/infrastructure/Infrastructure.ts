@@ -4,25 +4,33 @@ import {
   Destroyable,
   Selectable,
   Damageable,
+  Shape,
+  Buildable,
+  Static,
+  Health,
 } from "../util";
-import { Network } from "./network";
+import * as Network from "./network";
 import * as world from "../environment/world";
 
 const RANGE = 150;
 
 export abstract class Infrastructure
-  implements Drawable, Networkable, Destroyable, Selectable, Damageable {
+  implements
+    Static<Buildable>,
+    Drawable,
+    Networkable,
+    Destroyable,
+    Selectable,
+    Damageable {
   x: number;
   y: number;
   artificial = true;
   ghost = false;
   selected = false;
-  abstract health: number;
-  abstract maxHealth: number;
-  abstract network: Network;
-  abstract radius: number;
-  abstract width: number;
-  abstract height: number;
+  abstract static: Buildable;
+  abstract health: Health;
+  abstract network: Network.Network;
+  abstract shape: Shape;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -45,7 +53,7 @@ export abstract class Infrastructure
     if (this.selected) {
       ctx.strokeStyle = "lime";
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius + 5, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, this.shape.radius + 5, 0, Math.PI * 2);
       ctx.stroke();
     }
   }

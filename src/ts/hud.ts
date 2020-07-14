@@ -1,6 +1,8 @@
 import { materials, setGhost } from "./environment/world";
-import { infrastructures, Infrastructure } from "./infrastructure/index";
-import { Constructor, Buildable } from "./util";
+import {
+  infrastructures,
+  InfrastructureConstructor,
+} from "./infrastructure/index";
 
 const hud = document.querySelector(".hud")!;
 const qs = (selector: string) => hud.querySelector(selector)!;
@@ -38,9 +40,11 @@ DOM.buildables.addEventListener("mousedown", e => {
   const Selected = imgToStructure.get(target)!;
   setGhost(Selected);
 
+  const self = new Selected(0, 0);
+
   DOM.selected.name.textContent = Selected.name;
-  DOM.selected.cost.textContent = JSON.stringify(Selected.cost, null, 2);
-  DOM.selected.description.textContent = Selected.description;
+  DOM.selected.cost.textContent = JSON.stringify(self.static.cost, null, 2);
+  DOM.selected.description.textContent = self.static.description;
 });
 
 DOM.buildables.addEventListener("mousemove", e => {
@@ -54,14 +58,11 @@ DOM.buildables.addEventListener("mousemove", e => {
   }
 });
 
-const imgToStructure = new Map<
-  HTMLElement,
-  Constructor<Infrastructure> & Buildable
->();
+const imgToStructure = new Map<HTMLElement, InfrastructureConstructor>();
 
 for (const Infrastructure of infrastructures) {
-  const self = Infrastructure.display;
-  const { width, height } = self;
+  const self = new Infrastructure(0, 0);
+  const { width, height } = self.shape;
 
   workCtx.clearRect(0, 0, workWidth, workHeight);
   workCtx.translate(workWidth / 2, workHeight / 2);
