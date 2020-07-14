@@ -1,3 +1,5 @@
+import { Drawable, Collidable } from "./traits";
+
 export interface Shape {
   radius: number;
   width: number;
@@ -55,4 +57,18 @@ export function rgby4<T>(
   yellorium: T,
 ): RGBY<T> {
   return { redonium, greenorium, blutonium, yellorium };
+}
+
+export function isInside(obj: Drawable, x: number, y: number) {
+  return (
+    x >= obj.x - obj.shape.radius &&
+    x <= obj.x + obj.shape.radius &&
+    y >= obj.y - obj.shape.radius &&
+    y <= obj.y + obj.shape.radius
+  );
+}
+
+export function areColliding(a: Collidable, b: Collidable) {
+  const dist = Math.hypot(a.x - b.x, a.y - b.y);
+  return dist < a.shape.radius + b.shape.radius;
 }

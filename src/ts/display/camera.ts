@@ -1,5 +1,6 @@
-import { Drawable } from "@/util";
+import { Drawable, is } from "@/util";
 import { Mouse } from "./input";
+import { checkCollision } from "@/environment/collections";
 
 interface Controls {
   up(): void;
@@ -87,9 +88,31 @@ export class Camera {
     this.ctx.translate(this.width / 2 - this.x, this.height / 2 - this.y);
 
     for (const drawable of drawables) {
-      if (this.inBounds(drawable)) {
-        drawable.draw(this.ctx);
+      if (!this.inBounds(drawable)) {
+        continue;
       }
+
+      if (is.ghostable(drawable) && drawable.ghost) {
+        this.ctx.globalAlpha = 0.5;
+      }
+
+      if (is.collidable(drawable) && checkCollision(drawable)) {
+        this.ctx.globalCompositeOperation = "lighter";
+        this.ctx.fillStyle = "red";
+        this.ctx.beginPath();
+        this.ctx.arc(
+          drawable.x,
+          drawable.y,
+          drawable.shape.radius,
+          0,
+          Math.PI * 2,
+        );
+        this.ctx.fill();
+      }
+
+      drawable.draw(this.ctx);
+      this.ctx.globalAlpha = 1;
+      this.ctx.globalCompositeOperation = "source-over";
     }
 
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);

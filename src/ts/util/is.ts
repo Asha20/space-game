@@ -9,6 +9,7 @@ import type { Enemy } from "@/enemy";
 import type { Projectile } from "@/projectile";
 import type {
   Drawable,
+  Collidable,
   Tickable,
   Updatable,
   Ghostable,
@@ -39,6 +40,10 @@ export function asteroid(x: object): x is Asteroid {
 
 export function drawable(x: object): x is Drawable {
   return typeof (x as any).draw === "function";
+}
+
+export function collidable(x: object): x is Collidable {
+  return typeof (x as any).solid === "boolean";
 }
 
 export function ghostable(x: object): x is Ghostable {

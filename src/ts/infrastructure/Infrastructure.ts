@@ -9,6 +9,7 @@ import {
   Damageable,
   Buildable,
   Static,
+  Collidable,
 } from "@/util";
 import * as Network from "./network";
 
@@ -21,12 +22,14 @@ export abstract class Infrastructure
     Networkable,
     Destroyable,
     Selectable,
-    Damageable {
+    Damageable,
+    Collidable {
   x: number;
   y: number;
   artificial = true;
   ghost = false;
   selected = false;
+  solid = true;
   abstract static: Buildable;
   abstract health: Health;
   abstract network: Network.Network;

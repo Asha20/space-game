@@ -1,4 +1,11 @@
-import { random, Vector, Drawable, Destroyable, Selectable } from "@/util";
+import {
+  random,
+  Vector,
+  Drawable,
+  Destroyable,
+  Selectable,
+  Collidable,
+} from "@/util";
 import * as collections from "./collections";
 
 export enum AsteroidType {
@@ -36,12 +43,13 @@ function radians(degrees: number) {
   return (degrees / 180) * Math.PI;
 }
 
-export class Asteroid implements Drawable, Destroyable, Selectable {
+export class Asteroid implements Drawable, Destroyable, Selectable, Collidable {
   x: number;
   y: number;
   ghost = false;
   selected = false;
   artificial = false;
+  solid = true;
   mass: number;
   kind: AsteroidKind;
   seed: number;
@@ -55,10 +63,12 @@ export class Asteroid implements Drawable, Destroyable, Selectable {
   }
 
   get shape() {
+    const radius = Math.ceil(this.mass / 5) * 5;
+
     return {
-      radius: this.mass,
-      width: this.mass * 2,
-      height: this.mass * 2,
+      radius,
+      width: radius * 2,
+      height: radius * 2,
     };
   }
 
@@ -105,6 +115,7 @@ export class Asteroid implements Drawable, Destroyable, Selectable {
     ctx.fill();
 
     if (this.selected) {
+      ctx.strokeStyle = "white";
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.shape.radius + 5, 0, Math.PI * 2);
       ctx.stroke();

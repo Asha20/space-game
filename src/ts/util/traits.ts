@@ -8,6 +8,10 @@ export interface Drawable {
   draw(ctx: CanvasRenderingContext2D): void;
 }
 
+export interface Collidable extends Drawable {
+  solid: boolean;
+}
+
 export interface Ghostable {
   ghost: boolean;
 }
