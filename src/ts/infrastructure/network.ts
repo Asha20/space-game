@@ -1,14 +1,12 @@
 import { Infrastructure } from "./Infrastructure";
-import * as world from "@/environment/world";
-import { distance, Vector } from "@/util/util";
-import { Networkable } from "@/util/traits";
+import { distance, Networkable, Vector } from "@/util";
+import { collections } from "@/environment";
 
-const connectAlways = () => true;
+const connectAlways = (other: Infrastructure) => true;
 
 export type { Network };
 
 class Network {
-  materials = world.rgby(0);
   global = new Set<Infrastructure>();
   local = new Set<Infrastructure>();
   origin: Infrastructure;
@@ -16,7 +14,7 @@ class Network {
 
   constructor(
     origin: Infrastructure,
-    canConnect: (other: Infrastructure) => boolean = connectAlways,
+    canConnect: (other: Infrastructure) => boolean,
   ) {
     this.origin = origin;
     this.canConnect = canConnect;
@@ -68,7 +66,7 @@ class Network {
     const origin = this.origin;
     const modified = new Set<Infrastructure>([origin]);
 
-    for (const other of world.infrastructures) {
+    for (const other of collections.infrastructures) {
       if (other === origin || !this.canConnect(other)) {
         continue;
       }
@@ -99,7 +97,6 @@ class Network {
 
       network.add(current);
       current.network.global = network;
-      current.network.materials = this.materials;
       for (const other of current.network.local) {
         _reform(other, network);
       }
@@ -112,7 +109,7 @@ class Network {
 
 export function create(
   origin: Infrastructure,
-  canConnect: (other: Infrastructure) => boolean = connectAlways,
+  canConnect = connectAlways,
 ): Network {
   return new Network(origin, canConnect);
 }

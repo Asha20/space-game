@@ -1,5 +1,6 @@
-import { Shape, Health } from "@/util/util";
 import {
+  Shape,
+  Health,
   Drawable,
   Networkable,
   Destroyable,
@@ -7,9 +8,9 @@ import {
   Damageable,
   Buildable,
   Static,
-} from "@/util/traits";
+} from "@/util";
 import * as Network from "./network";
-import * as world from "@/environment/world";
+import { collections } from "@/environment";
 
 const RANGE = 150;
 
@@ -41,7 +42,7 @@ export abstract class Infrastructure
   }
 
   destroy() {
-    world.destroy(this);
+    collections.destroy(this);
     this.network.recalculate(0);
   }
 

@@ -37,3 +37,22 @@ export function compare<T>(transform: (x: T) => number, reverse = false) {
 export function angle(origin: Vector, target: Vector) {
   return Math.atan2(target.y - origin.y, target.x - origin.x);
 }
+
+export interface RGBY<T = number> {
+  redonium: T;
+  greenorium: T;
+  blutonium: T;
+  yellorium: T;
+}
+
+export function rgby1<T>(amount: T): RGBY<T> {
+  return rgby4(amount, amount, amount, amount);
+}
+export function rgby4<T>(
+  redonium: T,
+  greenorium: T,
+  blutonium: T,
+  yellorium: T,
+): RGBY<T> {
+  return { redonium, greenorium, blutonium, yellorium };
+}

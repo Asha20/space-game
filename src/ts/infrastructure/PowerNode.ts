@@ -1,10 +1,9 @@
-import { shape, health } from "@/util/util";
-import { rgby } from "@/environment/world";
+import { shape, health, rgby1 } from "@/util";
 import { Infrastructure } from "./Infrastructure";
 import * as Network from "./network";
 
 const STATIC = Object.freeze({
-  cost: rgby(2),
+  cost: rgby1(2),
   description: "Used to form networks to transfer power.",
 });
 

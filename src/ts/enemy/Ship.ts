@@ -1,8 +1,8 @@
 import { Enemy } from "./Enemy";
-import * as world from "@/environment/world";
-import { distance, compare, shape } from "@/util/util";
+import { distance, compare, shape } from "@/util";
 import { Infrastructure } from "@/infrastructure";
 import { RedBullet } from "@/projectile";
+import { collections } from "@/environment";
 
 export class Ship extends Enemy {
   speed = 4;
@@ -14,7 +14,7 @@ export class Ship extends Enemy {
   }
 
   getTarget() {
-    const distanceAscending = [...world.infrastructures].sort(
+    const distanceAscending = [...collections.infrastructures].sort(
       compare(inf => distance(this, inf)),
     );
     for (const infrastructure of distanceAscending) {
@@ -30,7 +30,7 @@ export class Ship extends Enemy {
 
   shoot(target: Infrastructure) {
     const bullet = new this.BulletType(this.x, this.y, this, target);
-    world.register(bullet);
+    collections.register(bullet);
   }
 
   update() {

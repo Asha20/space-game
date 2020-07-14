@@ -1,6 +1,5 @@
 import { Network } from "@/infrastructure";
-import { RGBY } from "@/environment/world";
-import { Shape, Health } from "./util";
+import { Shape, Health, RGBY } from "./util";
 
 export interface Drawable {
   x: number;

@@ -1,7 +1,5 @@
-import { Drawable, Destroyable, Selectable } from "@/util/traits";
-import { Vector } from "@/util/util";
-import * as random from "@/util/random";
-import * as world from "./world";
+import { random, Vector, Drawable, Destroyable, Selectable } from "@/util";
+import * as collections from "./collections";
 
 export enum AsteroidType {
   Redonium = "redonium",
@@ -69,7 +67,7 @@ export class Asteroid implements Drawable, Destroyable, Selectable {
   }
 
   destroy() {
-    world.destroy(this);
+    collections.destroy(this);
   }
 
   draw(ctx: CanvasRenderingContext2D) {

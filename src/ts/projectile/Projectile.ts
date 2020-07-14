@@ -1,7 +1,13 @@
 import { Infrastructure } from "@/infrastructure";
-import { angle, distance, Shape } from "@/util/util";
-import { Updatable, Drawable, Destroyable } from "@/util/traits";
-import * as world from "@/environment/world";
+import {
+  angle,
+  distance,
+  Updatable,
+  Drawable,
+  Destroyable,
+  Shape,
+} from "@/util";
+import { collections } from "@/environment";
 import { Enemy } from "@/enemy";
 
 export abstract class Projectile implements Updatable, Drawable, Destroyable {
@@ -42,7 +48,7 @@ export abstract class Projectile implements Updatable, Drawable, Destroyable {
   }
 
   destroy() {
-    world.destroy(this);
+    collections.destroy(this);
   }
 
   abstract draw(ctx: CanvasRenderingContext2D): void;

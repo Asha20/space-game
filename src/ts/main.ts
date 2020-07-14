@@ -1,7 +1,5 @@
 import { Keyboard, Camera, renderHUD } from "./display";
-import * as world from "./environment/world";
-import { ghost, Ghost } from "./environment/world";
-import { Ship } from "./enemy";
+import { collections, world } from "@/environment";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 if (!canvas) {
@@ -39,28 +37,27 @@ const camera = new Camera(ctx, ({ up, down, left, right, zoomIn, zoomOut }) => {
 
 const cameraMouse = camera.mouse;
 
-const ship = new Ship(0, 0);
-world.register(ship);
+world.init();
 
 function draw() {
-  if (ghost) {
-    ghost.x = cameraMouse.x;
-    ghost.y = cameraMouse.y;
+  if (world.ghost) {
+    world.ghost.x = cameraMouse.x;
+    world.ghost.y = cameraMouse.y;
   }
-  world.update();
-  camera.render(world.drawables);
+  collections.update();
+  camera.render(collections.drawables);
   renderHUD();
 
   if (cameraMouse.pressed()) {
-    world.select(cameraMouse.x, cameraMouse.y);
-    if (Ghost) {
-      const obj = new Ghost(cameraMouse.x, cameraMouse.y);
-      world.register(obj);
+    collections.select(cameraMouse.x, cameraMouse.y);
+    if (world.Ghost) {
+      const obj = new world.Ghost(cameraMouse.x, cameraMouse.y);
+      collections.register(obj);
     }
   }
 
   if (keyboard.pressed("Delete")) {
-    world.deleteSelection();
+    collections.deleteSelection();
   }
 
   requestAnimationFrame(draw);

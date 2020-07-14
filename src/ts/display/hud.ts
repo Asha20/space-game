@@ -1,4 +1,4 @@
-import { materials, setGhost } from "@/environment/world";
+import { world } from "@/environment";
 import { infrastructures, InfrastructureConstructor } from "@/infrastructure";
 
 const hud = document.querySelector(".hud")!;
@@ -35,7 +35,7 @@ DOM.buildables.addEventListener("mousedown", e => {
   }
 
   const Selected = imgToStructure.get(target)!;
-  setGhost(Selected);
+  world.setGhost(Selected);
 
   const self = new Selected(0, 0);
 
@@ -76,8 +76,8 @@ for (const Infrastructure of infrastructures) {
 }
 
 export function render() {
-  DOM.redonium.textContent = String(materials.redonium);
-  DOM.blutonium.textContent = String(materials.blutonium);
-  DOM.yellorium.textContent = String(materials.yellorium);
-  DOM.greenorium.textContent = String(materials.greenorium);
+  DOM.redonium.textContent = String(world.materials.redonium);
+  DOM.blutonium.textContent = String(world.materials.blutonium);
+  DOM.yellorium.textContent = String(world.materials.yellorium);
+  DOM.greenorium.textContent = String(world.materials.greenorium);
 }

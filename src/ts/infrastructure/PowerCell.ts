@@ -1,17 +1,15 @@
-import { shape, health } from "@/util/util";
-import { rgby } from "@/environment/world";
+import { is, shape, health, rgby1 } from "@/util";
 import { Infrastructure } from "./Infrastructure";
-import { powerNode as isPowerNode } from "@/util/is";
 import * as Network from "./network";
 
 const STATIC = Object.freeze({
-  cost: rgby(20),
+  cost: rgby1(20),
   description: "Supplies power to the network.",
 });
 
 export class PowerCell extends Infrastructure {
   static = STATIC;
-  network = Network.create(this, isPowerNode);
+  network = Network.create(this, is.powerNode);
   shape = shape.circle(32);
   health = health(200);
 

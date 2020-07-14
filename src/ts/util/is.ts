@@ -1,6 +1,11 @@
-import { Miner, PowerNode, PowerCell, Infrastructure } from "@/infrastructure";
-import { Asteroid } from "@/environment/asteroid";
-import {
+import type {
+  Miner,
+  PowerNode,
+  PowerCell,
+  Infrastructure,
+} from "@/infrastructure";
+import type { Asteroid } from "@/environment";
+import type {
   Drawable,
   Tickable,
   Updatable,
@@ -9,8 +14,8 @@ import {
   Destroyable,
   Networkable,
 } from "./traits";
-import { Enemy } from "@/enemy";
-import { Projectile } from "@/projectile/Projectile";
+import type { Enemy } from "@/enemy";
+import type { Projectile } from "@/projectile";
 
 export function miner(x: object): x is Miner {
   return x.constructor.name === "Miner";
@@ -66,9 +71,9 @@ export function networkable(x: object): x is Networkable {
 }
 
 export function enemy(obj: object): obj is Enemy {
-  return obj instanceof Enemy;
+  return obj.constructor.name === "Enemy";
 }
 
 export function projectile(obj: object): obj is Projectile {
-  return obj instanceof Projectile;
+  return obj.constructor.name === "Projectile";
 }
