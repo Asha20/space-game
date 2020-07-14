@@ -1,14 +1,13 @@
+import { Shape, Health } from "../util";
 import {
   Drawable,
   Networkable,
   Destroyable,
   Selectable,
   Damageable,
-  Shape,
   Buildable,
   Static,
-  Health,
-} from "../util";
+} from "../traits";
 import * as Network from "./network";
 import * as world from "../environment/world";
 

@@ -1,4 +1,5 @@
-import { Drawable, Vector, Destroyable, Selectable } from "../util";
+import { Drawable, Destroyable, Selectable } from "../traits";
+import { Vector } from "../util";
 import * as random from "../random";
 import * as world from "./world";
 

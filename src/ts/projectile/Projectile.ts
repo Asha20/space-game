@@ -1,12 +1,6 @@
 import { Infrastructure } from "../infrastructure/index";
-import {
-  Updatable,
-  Drawable,
-  angle,
-  distance,
-  Destroyable,
-  Shape,
-} from "../util";
+import { angle, distance, Shape } from "../util";
+import { Updatable, Drawable, Destroyable } from "../traits";
 import * as world from "../environment/world";
 import { Enemy } from "../enemy/index";
 

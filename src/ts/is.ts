@@ -13,8 +13,7 @@ import {
   Selectable,
   Destroyable,
   Networkable,
-  Vector,
-} from "./util";
+} from "./traits";
 import { Enemy } from "./enemy/index";
 import { Projectile } from "./projectile/Projectile";
 
@@ -68,12 +67,6 @@ export function destroyable(x: object): x is Destroyable {
 export function networkable(x: object): x is Networkable {
   return (
     (x as any).network && (x as any).network.constructor.name === "Network"
-  );
-}
-
-export function vector(obj: object): obj is Vector {
-  return (
-    typeof (obj as any).x === "number" && typeof (obj as any).y === "number"
   );
 }
 

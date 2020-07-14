@@ -1,5 +1,4 @@
 import { Projectile } from "./Projectile";
-import { Infrastructure } from "../infrastructure/index";
 import { shape } from "../util";
 
 export class RedBullet extends Projectile {
@@ -7,7 +6,7 @@ export class RedBullet extends Projectile {
   speed = 4;
   damage = 5;
 
-  onCollision(target: Infrastructure) {
+  onCollision() {
     this.destroy();
   }
 

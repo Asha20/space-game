@@ -1,6 +1,7 @@
 import { Infrastructure } from "./Infrastructure";
 import * as world from "../environment/world";
-import { distance, Vector, Networkable } from "../util";
+import { distance, Vector } from "../util";
+import { Networkable } from "../traits";
 
 const connectAlways = () => true;
 

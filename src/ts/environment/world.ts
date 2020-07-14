@@ -1,7 +1,7 @@
 import { Asteroid } from "./asteroid";
 import * as random from "../random";
 import * as is from "../is";
-import { Drawable } from "../util";
+import { Drawable } from "../traits";
 import {
   Infrastructure,
   InfrastructureConstructor,
