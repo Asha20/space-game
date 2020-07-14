@@ -5,6 +5,8 @@ import type {
   Infrastructure,
 } from "@/infrastructure";
 import type { Asteroid } from "@/environment";
+import type { Enemy } from "@/enemy";
+import type { Projectile } from "@/projectile";
 import type {
   Drawable,
   Tickable,
@@ -14,8 +16,6 @@ import type {
   Destroyable,
   Networkable,
 } from "./traits";
-import type { Enemy } from "@/enemy";
-import type { Projectile } from "@/projectile";
 
 export function miner(x: object): x is Miner {
   return x.constructor.name === "Miner";

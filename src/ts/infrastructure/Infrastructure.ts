@@ -1,3 +1,4 @@
+import { collections } from "@/environment";
 import {
   Shape,
   Health,
@@ -10,7 +11,6 @@ import {
   Static,
 } from "@/util";
 import * as Network from "./network";
-import { collections } from "@/environment";
 
 const RANGE = 150;
 

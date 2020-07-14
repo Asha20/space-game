@@ -1,7 +1,7 @@
-import { Asteroid } from "./asteroid";
 import { random, rgby1 } from "@/util";
-import * as collections from "./collections";
 import { Infrastructure, InfrastructureConstructor } from "@/infrastructure";
+import { Asteroid } from "./asteroid";
+import * as collections from "./collections";
 
 const MAP_WIDTH = 1000;
 const MAP_HEIGHT = 1000;

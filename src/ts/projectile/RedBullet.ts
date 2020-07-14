@@ -1,5 +1,5 @@
-import { Projectile } from "./Projectile";
 import { shape } from "@/util";
+import { Projectile } from "./Projectile";
 
 export class RedBullet extends Projectile {
   shape = shape.circle(2);

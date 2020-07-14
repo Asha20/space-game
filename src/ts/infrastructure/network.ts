@@ -1,6 +1,6 @@
-import { Infrastructure } from "./Infrastructure";
 import { distance, Networkable, Vector } from "@/util";
 import { collections } from "@/environment";
+import { Infrastructure } from "./Infrastructure";
 
 const connectAlways = (other: Infrastructure) => true;
 

@@ -1,8 +1,8 @@
-import { Enemy } from "./Enemy";
 import { distance, compare, shape } from "@/util";
 import { Infrastructure } from "@/infrastructure";
 import { RedBullet } from "@/projectile";
 import { collections } from "@/environment";
+import { Enemy } from "./Enemy";
 
 export class Ship extends Enemy {
   speed = 4;

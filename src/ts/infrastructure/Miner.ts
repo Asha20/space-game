@@ -1,8 +1,7 @@
 import { rgby1, distance, shape, health, Tickable, is } from "@/util";
+import { Asteroid, world, collections } from "@/environment";
 import { Infrastructure } from "./Infrastructure";
-import { Asteroid, world } from "@/environment";
 import * as Network from "./network";
-import { collections } from "@/environment";
 
 const RANGE = 150;
 

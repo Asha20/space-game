@@ -1,5 +1,5 @@
-import { Keyboard, Camera, renderHUD } from "./display";
 import { collections, world } from "@/environment";
+import { Keyboard, Camera, renderHUD } from "./display";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 if (!canvas) {

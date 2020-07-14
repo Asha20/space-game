@@ -1,4 +1,4 @@
-import { is, Drawable } from "../util";
+import { is, Drawable } from "@/util";
 
 interface Collection<T extends object> {
   set: Set<T>;
