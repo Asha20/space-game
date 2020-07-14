@@ -10,6 +10,7 @@ import {
   Buildable,
   Static,
   Collidable,
+  Updatable,
 } from "@/util";
 import * as Network from "./network";
 
@@ -23,7 +24,8 @@ export abstract class Infrastructure
     Destroyable,
     Selectable,
     Damageable,
-    Collidable {
+    Collidable,
+    Updatable {
   x: number;
   y: number;
   artificial = true;
@@ -60,4 +62,8 @@ export abstract class Infrastructure
       ctx.stroke();
     }
   }
+}
+
+export interface InfrastructureConstructor {
+  new (x: number, y: number): Infrastructure;
 }

@@ -1,5 +1,5 @@
 import { Network } from "@/infrastructure";
-import { Shape, Health, RGBY } from "./util";
+import { Shape, Health, RGBY, Attack } from "./util";
 
 export interface Drawable {
   x: number;
@@ -21,7 +21,7 @@ export interface Updatable extends Ghostable {
 }
 
 export interface Tickable extends Ghostable {
-  tick(): void;
+  tick(id: number): void;
 }
 
 export interface Destroyable {
@@ -44,6 +44,10 @@ export interface Buildable {
 
 export interface Damageable {
   health: Health;
+}
+
+export interface Attacking {
+  attack: Attack;
 }
 
 export interface Static<T> {

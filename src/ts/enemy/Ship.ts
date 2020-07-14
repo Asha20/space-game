@@ -1,40 +1,24 @@
-import { distance, compare, shape } from "@/util";
-import { Infrastructure } from "@/infrastructure";
+import { distance, compare, shape, health, Attack } from "@/util";
 import { RedBullet } from "@/projectile";
 import { collections } from "@/environment";
 import { Enemy } from "./Enemy";
 
+const ATTACK: Attack = Object.freeze({
+  Projectile: RedBullet,
+  rate: 2,
+  range: 100,
+});
+
 export class Ship extends Enemy {
   speed = 4;
   shape = shape.circle(16);
-  BulletType = RedBullet;
-
-  constructor(x: number, y: number) {
-    super(x, y);
-  }
+  health = health(20);
+  attack = ATTACK;
 
   getTarget() {
-    const distanceAscending = [...collections.infrastructures].sort(
-      compare(inf => distance(this, inf)),
-    );
-    for (const infrastructure of distanceAscending) {
-      if (!infrastructure.ghost) {
-        return infrastructure;
-      }
-    }
-  }
-
-  inRange(target: Infrastructure) {
-    return distance(this, target) < 100;
-  }
-
-  shoot(target: Infrastructure) {
-    const bullet = new this.BulletType(this.x, this.y, this, target);
-    collections.register(bullet);
-  }
-
-  update() {
-    super.update();
+    return [...collections.infrastructures]
+      .sort(compare(inf => distance(this, inf)))
+      .find(infrastructure => !infrastructure.ghost);
   }
 
   draw(ctx: CanvasRenderingContext2D) {

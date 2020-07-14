@@ -1,14 +1,31 @@
-import { angle, Shape, Drawable, Updatable, Tickable } from "@/util";
+import {
+  angle,
+  Shape,
+  Drawable,
+  Updatable,
+  Tickable,
+  Damageable,
+  Health,
+  Destroyable,
+  Attacking,
+  Attack,
+  distance,
+} from "@/util";
 import { Infrastructure } from "@/infrastructure";
+import { collections } from "@/environment";
 
-export abstract class Enemy implements Drawable, Updatable, Tickable {
+export abstract class Enemy
+  implements Drawable, Updatable, Tickable, Damageable, Destroyable, Attacking {
   x: number;
   y: number;
   rotation = 0;
   ghost = false;
-  target: Infrastructure | undefined = undefined;
+  artificial = false;
+  target: Infrastructure | undefined;
   abstract speed: number;
   abstract shape: Shape;
+  abstract health: Health;
+  abstract attack: Attack;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -16,18 +33,23 @@ export abstract class Enemy implements Drawable, Updatable, Tickable {
   }
 
   abstract getTarget(): Infrastructure | undefined;
-  abstract inRange(target: Infrastructure): boolean;
 
-  tick() {
+  inRange(target: Infrastructure) {
+    return distance(this, target) < this.attack.range;
+  }
+
+  tick(id: number) {
     if (!this.target || !this.inRange(this.target)) {
       return;
     }
 
-    this.shoot(this.target);
+    if (id % this.attack.rate === 0) {
+      this.shoot(this.target);
+    }
   }
 
   update() {
-    if (!this.target) {
+    if (!this.target || (this.target && this.target.health.current <= 0)) {
       this.target = this.getTarget();
     }
 
@@ -45,6 +67,14 @@ export abstract class Enemy implements Drawable, Updatable, Tickable {
     this.y += this.speed * Math.sin(this.rotation);
   }
 
-  abstract shoot(target: Infrastructure): void;
+  destroy() {
+    collections.destroy(this);
+  }
+
+  shoot(target: Infrastructure) {
+    const projectile = new this.attack.Projectile(this.x, this.y, target);
+    collections.register(projectile);
+  }
+
   abstract draw(ctx: CanvasRenderingContext2D): void;
 }

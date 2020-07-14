@@ -3,10 +3,11 @@ import type {
   PowerNode,
   PowerCell,
   Infrastructure,
+  Turret,
 } from "@/infrastructure";
 import type { Asteroid } from "@/environment";
-import type { Enemy } from "@/enemy";
-import type { Projectile } from "@/projectile";
+import type { Enemy, Ship } from "@/enemy";
+import { Projectile, RedBullet } from "@/projectile";
 import type {
   Drawable,
   Collidable,
@@ -16,28 +17,16 @@ import type {
   Selectable,
   Destroyable,
   Networkable,
+  Attacking,
 } from "./traits";
 
-export function miner(x: object): x is Miner {
-  return x.constructor.name === "Miner";
+function isInstanceOf<T extends object>(name: string) {
+  return function _isInstanceOf(x: object): x is T {
+    return x.constructor.name === name;
+  };
 }
 
-export function powerNode(x: object): x is PowerNode {
-  return x.constructor.name === "PowerNode";
-}
-
-export function powerCell(x: object): x is PowerCell {
-  return x.constructor.name === "PowerCell";
-}
-
-export function infrastructure(x: object): x is Infrastructure {
-  return miner(x) || powerNode(x) || powerCell(x);
-}
-
-export function asteroid(x: object): x is Asteroid {
-  return x.constructor.name === "Asteroid";
-}
-
+// Traits
 export function drawable(x: object): x is Drawable {
   return typeof (x as any).draw === "function";
 }
@@ -75,10 +64,38 @@ export function networkable(x: object): x is Networkable {
   );
 }
 
-export function enemy(obj: object): obj is Enemy {
-  return obj.constructor.name === "Enemy";
+export function attacking(x: object): x is Attacking {
+  const attack = (x as any).attack;
+  // The Projectile property isn't checked because I'm not sure
+  // what would be a good way to do it.
+  return (
+    typeof attack === "object" &&
+    typeof attack.range === "number" &&
+    typeof attack.rate === "number"
+  );
 }
 
-export function projectile(obj: object): obj is Projectile {
-  return obj.constructor.name === "Projectile";
+// Infrastructure
+export const miner = isInstanceOf<Miner>("Miner");
+export const powerNode = isInstanceOf<PowerNode>("PowerNode");
+export const powerCell = isInstanceOf<PowerCell>("PowerCell");
+export const turret = isInstanceOf<Turret>("Turret");
+export const asteroid = isInstanceOf<Asteroid>("Asteroid");
+
+export function infrastructure(x: object): x is Infrastructure {
+  return miner(x) || powerNode(x) || powerCell(x) || turret(x);
+}
+
+// Enemies
+export const ship = isInstanceOf<Ship>("Ship");
+
+export function enemy(x: object): x is Enemy {
+  return ship(x);
+}
+
+// Projectiles
+export const redBullet = isInstanceOf<RedBullet>("RedBullet");
+
+export function projectile(x: object): x is Projectile {
+  return redBullet(x);
 }

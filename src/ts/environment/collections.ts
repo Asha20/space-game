@@ -22,6 +22,7 @@ export const updatables = collection(is.updatable);
 export const tickables = collection(is.tickable);
 export const selectables = collection(is.selectable);
 export const collidables = collection(is.collidable);
+export const enemies = collection(is.enemy);
 
 export function checkCollision(obj: Collidable) {
   for (const other of collidables) {
@@ -63,17 +64,24 @@ export function destroy(x: object) {
   }
 }
 
+let tickId = 0;
 export function tick() {
   for (const tickable of tickables) {
     if (!tickable.ghost) {
-      tickable.tick();
+      tickable.tick(tickId);
     }
   }
+
+  tickId += 1;
 }
 
 export function update() {
   for (const updatable of updatables) {
-    if (updatable.ghost || is.enemy(updatable) || is.projectile(updatable)) {
+    if (
+      updatable.ghost ||
+      is.projectile(updatable) ||
+      is.attacking(updatable)
+    ) {
       updatable.update();
     }
   }

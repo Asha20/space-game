@@ -1,5 +1,6 @@
 import { collections, world } from "@/environment";
 import { Keyboard, Camera, renderHUD } from "./display";
+import { Ship } from "./enemy";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#app");
 if (!canvas) {
@@ -37,6 +38,7 @@ const camera = new Camera(ctx, ({ up, down, left, right, zoomIn, zoomOut }) => {
 
 const cameraMouse = camera.mouse;
 
+collections.register(new Ship(0, 0));
 world.init();
 
 function draw() {
