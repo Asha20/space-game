@@ -1,5 +1,12 @@
 import { Network } from "@/infrastructure";
-import { Shape, Health, RGBY, Attack } from "./util";
+import { RGBY } from "./util";
+import { ProjectileConstructor } from "@/projectile/Projectile";
+
+export interface Shape {
+  radius: number;
+  width: number;
+  height: number;
+}
 
 export interface Drawable {
   x: number;
@@ -37,13 +44,28 @@ export interface Selectable extends Drawable, Ghostable {
   selected: boolean;
 }
 
-export interface Buildable {
+export interface Build {
   cost: RGBY;
   description: string;
 }
 
+export interface Buildable {
+  build: Build;
+}
+
+export interface Health {
+  max: number;
+  current: number;
+}
+
 export interface Damageable {
   health: Health;
+}
+
+export interface Attack {
+  Projectile: ProjectileConstructor;
+  range: number;
+  rate: number;
 }
 
 export interface Attacking {
@@ -52,4 +74,26 @@ export interface Attacking {
 
 export interface Static<T> {
   static: T;
+}
+
+export const shape = {
+  circle(radius: number): Shape {
+    return Object.freeze({ radius, width: 2 * radius, height: 2 * radius });
+  },
+};
+
+export function health(max: number, current?: number): Health {
+  return { max, current: current ?? max };
+}
+
+export function attack(
+  Projectile: ProjectileConstructor,
+  rate: number,
+  range: number,
+): Attack {
+  return Object.freeze({ Projectile, rate, range });
+}
+
+export function build(cost: RGBY<number>, description: string): Build {
+  return { cost, description };
 }

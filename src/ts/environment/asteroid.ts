@@ -5,6 +5,7 @@ import {
   Destroyable,
   Selectable,
   Collidable,
+  shape,
 } from "@/util";
 import * as collections from "./collections";
 
@@ -54,22 +55,26 @@ export class Asteroid implements Drawable, Destroyable, Selectable, Collidable {
   kind: AsteroidKind;
   seed: number;
 
+  speed: number;
+  direction: number;
+  rotationSpeed: number;
+  rotation = 0;
+
   constructor(x: number, y: number, mass: number) {
     this.x = x;
     this.y = y;
     this.seed = random.getSeed();
     this.mass = mass / 6;
     this.kind = random.choose(kinds);
+
+    this.speed = random.rangeFloat(0.01, 0.05);
+    this.direction = random.rangeFloat(0, 2 * Math.PI);
+    this.rotationSpeed = random.rangeFloat(-0.001, 0.001);
   }
 
   get shape() {
     const radius = Math.ceil(this.mass / 5) * 5;
-
-    return {
-      radius,
-      width: radius * 2,
-      height: radius * 2,
-    };
+    return shape.circle(radius);
   }
 
   static shouldSpawn() {
@@ -84,6 +89,14 @@ export class Asteroid implements Drawable, Destroyable, Selectable, Collidable {
     if (this.mass <= 0) {
       this.destroy();
     }
+
+    this.x += this.speed * Math.cos(this.direction);
+    this.y += this.speed * Math.sin(this.direction);
+    this.rotation += this.rotationSpeed;
+
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.translate(-this.x, -this.y);
 
     random.setSeed(this.seed);
     ctx.fillStyle = this.kind.color;
@@ -105,6 +118,8 @@ export class Asteroid implements Drawable, Destroyable, Selectable, Collidable {
       points.push(point);
     }
     let prev = points[0];
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 3;
     ctx.fillStyle = this.kind.color;
     ctx.beginPath();
     ctx.moveTo(prev.x, prev.y);
@@ -112,6 +127,8 @@ export class Asteroid implements Drawable, Destroyable, Selectable, Collidable {
       const current = points[i];
       ctx.lineTo(current.x, current.y);
     }
+    ctx.closePath();
+    ctx.stroke();
     ctx.fill();
 
     if (this.selected) {

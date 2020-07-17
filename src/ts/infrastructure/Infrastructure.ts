@@ -8,9 +8,9 @@ import {
   Selectable,
   Damageable,
   Buildable,
-  Static,
   Collidable,
   Updatable,
+  Build,
 } from "@/util";
 import * as Network from "./network";
 
@@ -18,7 +18,7 @@ const RANGE = 150;
 
 export abstract class Infrastructure
   implements
-    Static<Buildable>,
+    Buildable,
     Drawable,
     Networkable,
     Destroyable,
@@ -32,7 +32,7 @@ export abstract class Infrastructure
   ghost = false;
   selected = false;
   solid = true;
-  abstract static: Buildable;
+  abstract build: Build;
   abstract health: Health;
   abstract network: Network.Network;
   abstract shape: Shape;

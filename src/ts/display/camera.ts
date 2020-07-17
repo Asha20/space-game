@@ -1,6 +1,6 @@
-import { Drawable, is } from "@/util";
+import { Drawable, is, areColliding } from "@/util";
 import { Mouse } from "./input";
-import { checkCollision } from "@/environment/collections";
+import { world } from "@/environment";
 
 interface Controls {
   up(): void;
@@ -112,7 +112,11 @@ export class Camera {
         this.ctx.globalAlpha = 0.5;
       }
 
-      if (is.collidable(drawable) && checkCollision(drawable)) {
+      if (
+        is.collidable(drawable) &&
+        world.ghost &&
+        areColliding(world.ghost, drawable)
+      ) {
         this.ctx.globalCompositeOperation = "lighter";
         this.ctx.fillStyle = "red";
         this.ctx.beginPath();
@@ -126,7 +130,9 @@ export class Camera {
         this.ctx.fill();
       }
 
+      this.ctx.save();
       drawable.draw(this.ctx);
+      this.ctx.restore();
       this.ctx.globalAlpha = 1;
       this.ctx.globalCompositeOperation = "source-over";
     }

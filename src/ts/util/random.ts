@@ -22,6 +22,8 @@ export function setSeed(seed: number) {
   state = seed;
 }
 
+setSeed(Math.floor(Math.random() * 2 ** 31));
+
 export function range(min: number, max: number) {
   return min + (next() % (max - min + 1));
 }

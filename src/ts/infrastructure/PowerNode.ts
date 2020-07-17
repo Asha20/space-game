@@ -1,14 +1,12 @@
-import { shape, health, rgby1 } from "@/util";
+import { shape, health, rgby1, build } from "@/util";
 import { Infrastructure } from "./Infrastructure";
 import * as Network from "./network";
 
-const STATIC = Object.freeze({
-  cost: rgby1(2),
-  description: "Used to form networks to transfer power.",
-});
+const COST = rgby1(2);
+const DESCRIPTION = "Used to form networks to transfer power.";
 
 export class PowerNode extends Infrastructure {
-  static = STATIC;
+  build = build(COST, DESCRIPTION);
   network = Network.create(this);
   shape = shape.circle(4);
   health = health(20);

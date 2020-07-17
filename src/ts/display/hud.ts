@@ -40,8 +40,8 @@ DOM.buildables.addEventListener("mousedown", e => {
   const self = new Selected(0, 0);
 
   DOM.selected.name.textContent = Selected.name;
-  DOM.selected.cost.textContent = JSON.stringify(self.static.cost, null, 2);
-  DOM.selected.description.textContent = self.static.description;
+  DOM.selected.cost.textContent = JSON.stringify(self.build.cost, null, 2);
+  DOM.selected.description.textContent = self.build.description;
 });
 
 DOM.buildables.addEventListener("mousemove", e => {

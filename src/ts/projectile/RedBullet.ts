@@ -3,7 +3,7 @@ import { Projectile } from "./Projectile";
 
 export class RedBullet extends Projectile {
   shape = shape.circle(2);
-  speed = 4;
+  speed = 2;
   damage = 5;
 
   onCollision() {

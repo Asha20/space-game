@@ -1,17 +1,15 @@
-import { rgby1, distance, shape, health, Tickable, is } from "@/util";
+import { rgby1, distance, shape, health, Tickable, is, build } from "@/util";
 import { Asteroid, world, collections } from "@/environment";
 import { Infrastructure } from "./Infrastructure";
 import * as Network from "./network";
 
-const RANGE = 150;
+const RANGE = 100;
 
-const STATIC = Object.freeze({
-  cost: rgby1(10),
-  description: "Mines nearby asteroids.",
-});
+const COST = rgby1(10);
+const DESCRIPTION = "Mines nearby asteroids.";
 
 export class Miner extends Infrastructure implements Tickable {
-  static = STATIC;
+  build = build(COST, DESCRIPTION);
   network = Network.create(this, is.powerNode);
   shape = shape.circle(16);
   health = health(100);
@@ -34,7 +32,7 @@ export class Miner extends Infrastructure implements Tickable {
 
   recalculateTargets() {
     this.targets = [...collections.asteroids].filter(
-      as => distance(this, as) <= RANGE,
+      as => distance(this, as) <= RANGE + as.shape.radius,
     );
   }
 

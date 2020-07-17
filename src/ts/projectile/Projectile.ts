@@ -31,6 +31,11 @@ export abstract class Projectile implements Updatable, Drawable, Destroyable {
   abstract onCollision(target: Target): void;
 
   update() {
+    if (this.target.health.current <= 0) {
+      this.destroy();
+      return;
+    }
+
     this.rotation = angle(this, this.target);
 
     this.x += this.speed * Math.cos(this.rotation);

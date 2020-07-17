@@ -59,12 +59,17 @@ export abstract class Enemy
 
     this.rotation = angle(this, this.target);
 
-    if (this.inRange(this.target)) {
-      return;
+    if (
+      distance(this, this.target) <=
+      2 * this.shape.radius + this.target.shape.radius
+    ) {
+      this.rotation += Math.PI;
+      this.x += this.speed * Math.cos(this.rotation);
+      this.y += this.speed * Math.sin(this.rotation);
+    } else if (!this.inRange(this.target)) {
+      this.x += this.speed * Math.cos(this.rotation);
+      this.y += this.speed * Math.sin(this.rotation);
     }
-
-    this.x += this.speed * Math.cos(this.rotation);
-    this.y += this.speed * Math.sin(this.rotation);
   }
 
   destroy() {

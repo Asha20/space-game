@@ -1,32 +1,4 @@
 import { Drawable, Collidable } from "./traits";
-import { ProjectileConstructor } from "@/projectile/Projectile";
-
-export interface Shape {
-  radius: number;
-  width: number;
-  height: number;
-}
-
-export interface Health {
-  max: number;
-  current: number;
-}
-
-export interface Attack {
-  Projectile: ProjectileConstructor;
-  range: number;
-  rate: number;
-}
-
-export const shape = {
-  circle(radius: number): Shape {
-    return { radius, width: 2 * radius, height: 2 * radius };
-  },
-};
-
-export function health(max: number): Health {
-  return { max, current: max };
-}
 
 export interface Vector {
   x: number;

@@ -1,13 +1,20 @@
-import { rgby1, distance, shape, health, is, compare, Attack } from "@/util";
+import {
+  rgby1,
+  distance,
+  shape,
+  health,
+  is,
+  compare,
+  Attack,
+  build,
+} from "@/util";
 import { Asteroid, collections } from "@/environment";
 import { RedBullet } from "@/projectile";
 import * as Network from "./network";
 import { AttackInfrastructure } from "./AttackInfrastructure";
 
-const STATIC = Object.freeze({
-  cost: rgby1(10),
-  description: "Attacks enemies.",
-});
+const COST = rgby1(10);
+const DESCRIPTION = "Attacks enemies.";
 
 const ATTACK: Attack = Object.freeze({
   Projectile: RedBullet,
@@ -16,7 +23,7 @@ const ATTACK: Attack = Object.freeze({
 });
 
 export class Turret extends AttackInfrastructure {
-  static = STATIC;
+  build = build(COST, DESCRIPTION);
   network = Network.create(this, is.powerNode);
   shape = shape.circle(16);
   health = health(100);
